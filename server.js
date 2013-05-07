@@ -7,6 +7,7 @@ var mysql = require('mysql');
 
 var mysqlUser = 'USERNAME';
 var mysqlPassword = 'PASSWORD';
+var mysqlDatabase = 'DATABASE';
 var mpdPassword = mysqlPassword;
 var icecastPassword = mysqlPassword;
 var ipinfoApiKey = "15ac89298a362c69b7ce1c2cae0f0631f79c514e078fa8b93cef464c7e9a5ab7";
@@ -20,7 +21,7 @@ var db = mysql.createConnection({
 	port: '/var/run/mysqld/mysqld.sock'
 });
 db.connect();
-db.query('USE `wonder-radio`');
+db.query('USE `'+mysqlDatabase+'`');
 console.log("Connected to database");
 
 var icecastOptions = {
