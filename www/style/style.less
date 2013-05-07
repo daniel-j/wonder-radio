@@ -1,0 +1,441 @@
+/* http://css-tricks.com/snippets/css/useful-css3-less-mixins/ */
+.horizontal-gradient (@startColor: #eee, @endColor: white) {
+ 	background-color: @startColor;
+	background-image: -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor));
+	background-image: -webkit-linear-gradient(left, @startColor, @endColor);
+	background-image: -moz-linear-gradient(left, @startColor, @endColor);
+	background-image: -ms-linear-gradient(left, @startColor, @endColor);
+	background-image: -o-linear-gradient(left, @startColor, @endColor);
+}
+
+@import "elements.less";
+
+@spin: 20;
+
+@dark: spin(deeppink, @spin);
+@medium: spin(hotpink, @spin);
+@light: spin(pink, @spin);
+
+
+@font-face { 
+	font-family: 'Equestria';
+	src: url('fonts/Equestria.ttf');
+}
+
+html {
+	background-color: darken(@medium, 50%);
+}
+body {
+	font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	.gradient(darken(@medium, 50%), darken(@medium, 50%), darken(@medium, 30%));
+	background-repeat: no-repeat;
+	margin: 0px;
+	padding-bottom: 20px;
+	cursor: default;
+	height: 100%;
+}
+
+
+#wrapper {
+	margin: 0 auto;
+	min-width: 640px;
+	width: 1200px;
+	background-color: white;
+}
+
+#topheader {
+	text-align: center;
+	overflow: hidden;
+	position: relative;
+	height: 130px;
+	.gradient(@light, darken(@light, 2%), lighten(@light, 4%));
+	border-bottom: 4px solid @medium;
+
+	h1 {
+		font-size: 64px;
+		margin: 10px;
+		font-family: "Equestria";
+		font-weight: normal;
+
+		a {
+			color: @dark;
+			text-decoration: none;
+		}
+	}
+
+	h2 {
+		color: @medium;
+		margin: 0px;
+	}
+
+	#pinkieheadphones {
+		margin-right: 30px;
+		margin-top: 10px;
+		float: right;
+	}
+}
+
+#contentWrapper {
+	overflow: hidden;
+	background-image: url('../img/dj_rainbow_dash_by_smittyg_small.png');
+	background-repeat: no-repeat;
+	background-position: right bottom;
+}
+
+#rightcol {
+	float: left;
+	color: white;
+	text-align: center;
+	width: 200px;
+	margin-right: -200px;
+	left: 1000px;
+	position: relative;
+
+
+	#sidepanel {
+		padding: 10px;
+		margin-bottom: 200px;
+		min-height: 320px;
+		.gradient(@medium, darken(@medium, 10%), @medium);
+
+		h2 {
+			margin: 0px;
+			color: @light;
+			font-family: Equestria;
+			font-size: 36px;
+			font-weight: normal;
+		}
+
+		button {
+			.gradient(@light, darken(@light, 10%), @light);
+			border: 2px solid @dark;
+			border-bottom-width: 4px;
+			border-radius: 5px;
+			padding: 5px;
+			width: 100%;
+			display: block;
+			position: relative;
+
+			&:active {
+				border-bottom-width: 2px;
+				margin-top: 4px;
+				.gradient(darken(@light, 10%), darken(@light, 5%), darken(@light, 10%));
+			}
+		}
+		
+
+		#currentSong {
+			font-weight: bold;
+		}
+
+		hr {
+			border: none;
+			border-bottom: 2px solid @dark;
+		}
+
+		a {
+			color: white;
+		}
+	}
+}
+
+#playlistContainer {
+	float: left;
+	width: 1000px;
+	position: relative;
+	background-color: white;
+}
+
+.playlist, .search-result {
+	border-spacing:0;
+	border-collapse:collapse;
+	width: 100%;
+
+	th {
+		padding: 5px;
+		text-align: left;
+		font-size: 13px;
+	}
+
+	td {
+		padding: 5px 4px;
+		vertical-align: top;
+		color: #333;
+		/*border-top: 5px solid transparent;*/
+	}
+
+	tr > * {
+		&:nth-child(4), &:nth-child(5), &:nth-child(6) {
+			text-align: right;
+		}
+	}
+}
+
+.playlist tr:not(.current):hover td, .search-result tr:hover td {
+	background-color: lighten(@light, 10%);
+}
+
+.playlist {
+
+	thead tr, tr.queued {
+		background-color: lighten(@light, 5%);
+	}
+
+	th {
+		color: @dark;
+	}
+
+	tr.queued td {
+		color: #666;
+	}
+
+	tr.current td {
+		background-color: @medium;
+		color: white;
+		font-weight: bold;
+
+		&:first-child {
+			text-align: center;
+
+			&:before {
+				content: "▶";
+				font-weight: bold;
+				font-size: 16px;
+				color: @light;
+			}
+		}
+	}
+
+	td:first-child, tr.queued td:first-child {
+		color: #AAA;
+	}
+
+	.vote {
+		opacity: 0.3;
+		width: 24px;
+		height: 20px;
+		text-indent: -4px;
+		line-height: 10px;
+		color: #444;
+		border: none;
+		font-size: 16px;
+		background-color: transparent;
+		font-weight: bold;
+		cursor: default;
+
+		&.down {
+			text-indent: -3px;
+			line-height: 15px;
+		}
+
+		&.voted {
+			opacity: 1;
+
+			&.up {
+				color: #090;
+			}
+			&.down {
+				color: red;
+			}
+		}
+		
+	}
+}
+
+
+#searchContainer {
+	background-color: lighten(@light, 7%);
+	clear: both;
+	border-top: 1px solid darken(@light, 5%);
+
+	h2 {
+		color: @medium;
+		margin: 10px;
+		font-family: Equestria;
+		font-weight: normal;
+		font-size: 30px;
+	}
+	form {
+		padding: 10px;
+		input[type='search'] {
+			width: 300px;
+		}
+	}
+	
+}
+
+.search-result {
+	td {
+		color: #444;
+
+		&:first-child {
+			color: #888;
+		}
+	}
+
+	button {
+		background-color: @light;
+		border: 1px solid @medium;
+		border-radius: 2px;
+		color: @dark;
+		padding: 1px 10px;
+		display: block;
+		margin: 0px;
+	}
+}
+
+footer {
+	padding: 10px;
+	font-size: 13px;
+	.gradient(lighten(@light, 5%), lighten(@light, 0%), lighten(@light, 4%));
+	color: #867;
+	border-top: 1px solid darken(@light, 5%);
+	overflow: hidden;
+
+	a {
+		color: @medium;
+	}
+
+	#basscannon {
+		margin-right: 20px;
+		float: left;
+	}
+
+	#footercontent {
+		float: left;
+	}
+
+	#geocanvas {
+		background: url('../img/worldmap.png');
+		float: right;
+		opacity: 0.8;
+	}
+}
+
+@media screen and (max-width: 1220px) {
+
+	#wrapper {
+		width: auto;
+	}
+
+	#rightcol {
+		margin: 0px;
+		width: auto;
+		float: none;
+		left: 0px;
+
+		#sidepanel {
+			margin-bottom: 0px;
+			overflow: hidden;
+			min-height: auto !important;
+			height: auto !important;
+
+			h2 {
+				display: none;
+			}
+
+			#panelbuttons {
+				button {
+					width: 32%;
+					display: inline;
+				}
+			}
+
+			#currentListenersWrapper {
+				text-align: left;
+			}
+		}
+	}
+
+	#playlistContainer {
+		clear: both;
+		float: none;
+		width: auto;
+	}
+
+	
+
+	footer #geocanvas {
+		float: right;
+	}
+}
+
+@media screen and (max-width: 960px) {
+	.playlist tr > *, .search-result tr > * {
+		&:nth-child(4), &:nth-child(5) {
+			display: none;
+		}
+	}
+}
+
+@media screen and (max-width: 700px) {
+
+	#topheader {
+		height: auto;
+		#pinkieheadphones {
+			display: none;
+		}
+	}
+
+	footer {
+		#basscannon {
+			display: none;
+		}
+		#geocanvas {
+			display: block;
+			float: none;
+			margin: 0 auto;
+		}
+	}
+
+	.playlist tr > *, .search-result tr > * {
+		&:nth-child(1) {
+			display: none;
+		}
+	}
+
+	.playlist tr > * {
+		&:nth-child(7), &:nth-child(8) {
+			display: none;
+		}
+	}
+
+	.search-result tr > * {
+		&:nth-child(6) {
+			display: none;
+		}
+	}
+}
+
+@media screen and (max-width: 640px) {
+	#topheader {
+
+		h1 {
+			font-size: 40px;
+			margin: 0px;
+		}
+		h2 {
+			font-size: 18px;
+			margin-bottom: 5px;
+		}
+	}
+
+	#rightcol {
+
+		#sidepanel {
+
+			#panelbuttons {
+				button {
+					padding: 20px;
+					width: 100%;
+					display: block;
+				}
+			}
+			#currentListenersWrapper {
+				text-align: center;
+			}
+		}
+		
+	}
+}
