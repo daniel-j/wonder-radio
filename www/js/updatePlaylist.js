@@ -90,11 +90,13 @@
 				if (track.vote === 1) {
 					voteUp += ' voted';
 					voteDown += ' notvoted';
+					voteUpBtn.addEventListener('click', handleVote.bind(voteUpBtn, track.id, 0), false);
 					voteDownBtn.addEventListener('click', handleVote.bind(voteDownBtn, track.id, -1), false);
 				} else if (track.vote === -1) {
 					voteUp += ' notvoted';
 					voteDown += ' voted';
 					voteUpBtn.addEventListener('click', handleVote.bind(voteUpBtn, track.id, 1), false);
+					voteDownBtn.addEventListener('click', handleVote.bind(voteDownBtn, track.id, 0), false);
 				} else {
 					voteUpBtn.addEventListener('click', handleVote.bind(voteUpBtn, track.id, 1), false);
 					voteDownBtn.addEventListener('click', handleVote.bind(voteDownBtn, track.id, -1), false);
