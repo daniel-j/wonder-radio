@@ -101,7 +101,7 @@ if (isset($_GET['search'])) {
 			MATCH(tags) AGAINST(?) OR tags LIKE ?
 		ORDER BY
 			lastplayedTime*rating DESC
-		LIMIT 50");
+		LIMIT 100");
 	
 	$sql->execute(array($search, $search, "%".$search."%"));
 	
