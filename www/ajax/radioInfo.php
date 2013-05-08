@@ -8,7 +8,6 @@ unset($mounts[""]);
 $sqlTracks = $db->prepare("
 	SELECT
 		tracks.*,
-		UNIX_TIMESTAMP(lastplayed) AS timePlayed,
 		(SELECT vote FROM votes WHERE tracks.id=votes.trackId AND votes.ip=INET_ATON(?)) as vote,
 		IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating
 	FROM
@@ -20,8 +19,8 @@ $sqlTracks = $db->prepare("
 	LIMIT
 		1");
 $sqlTracks->execute(array($_SERVER['REMOTE_ADDR']));
-$tracks = $sqlTracks->fetchAll();
+$track = $sqlTracks->fetchAll()[0];
 
 
 print_r($mounts);
-print_r($tracks[0]);
+print_r($track);
