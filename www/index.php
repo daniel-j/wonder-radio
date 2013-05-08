@@ -182,7 +182,7 @@ if (isset($_GET['search'])) {
 		<div id="playlistContainer">
 			<table class="playlist">
 				<thead>
-					<tr><th width=1></th><th>Title</th><th>Artist</th><th width=1>Plays</th><th width=1>Requests</th><th width=1>Rating</th><th width=1></th><th width=1></th></tr>
+					<tr><th width=1></th><th>Title</th><th>Artist</th><th width=1>Plays</th><th width=1>Requests</th><th width=1 colspan=3>Rating</th></tr>
 				</thead>
 				<tbody id="playlistBody"></tbody>
 			</table>

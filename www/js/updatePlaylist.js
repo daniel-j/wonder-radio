@@ -76,7 +76,6 @@
 				cells[2].textContent = track.artist;
 				cells[3].textContent = track.playCount;
 				cells[4].textContent = track.requestCount;
-				cells[5].textContent = track.rating;
 
 				var voteUpBtn = document.createElement('button');
 				var voteDownBtn = document.createElement('button');
@@ -104,7 +103,8 @@
 				voteUpBtn.className = voteUp;
 				voteDownBtn.className = voteDown;
 
-				cells[6].appendChild(voteUpBtn);
+				cells[5].appendChild(voteUpBtn);
+				cells[6].textContent = track.rating;
 				cells[7].appendChild(voteDownBtn);
 			}
 		});
