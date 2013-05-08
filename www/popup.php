@@ -45,6 +45,7 @@ MRP.insert({
 <?php } else { ?>
 
 <button type="button" id="playstopbtn" disabled></button>
+<input type="range" id="radioVolume" min="0" max="1" step="0.01" value="0.5">
 <br><br>
 <div id="currentSongWrapper">
 	Current listeners: <strong><span id="currentListeners"></span></strong>

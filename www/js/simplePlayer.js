@@ -4,10 +4,19 @@
 
 
 	var playstopbtn = document.getElementById('playstopbtn');
+	var radioVolume = document.getElementById('radioVolume');
 	var audioTag;
 	var isPlaying = false;
 
 	playstopbtn.addEventListener('click', togglePlay, false);
+	if (radioVolume) {
+		radioVolume.addEventListener('change', function () {
+			if (audioTag) {
+				audioTag.volume = radioVolume.value;
+			}
+		}, false);
+	}
+
 
 	function togglePlay() {
 		if (isPlaying) {
@@ -28,6 +37,7 @@
 		audioTag.addEventListener('ended', handleStreamEnded, false);
 		audioTag.addEventListener('canplay', handleStreamCanPlay, false);
 		audioTag.src = stationUrl;
+		audioTag.volume = radioVolume? radioVolume.value : 0.5;
 		audioTag.play();
 	}
 
