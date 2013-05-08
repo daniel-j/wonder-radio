@@ -58,8 +58,9 @@
 				cells[2].textContent = track.artist;
 				cells[3].textContent = track.playCount;
 				cells[4].textContent = track.requestCount;
-				cells[5].textContent = track.rating;
+				cells[6].textContent = track.rating;
 			}
+
 			for (var i = 0; i < history.length; i++) {
 				var track = history[i];
 				var row = container.insertRow(-1);
