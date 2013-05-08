@@ -19,7 +19,7 @@ $sqlTracks = $db->prepare("
 		1");
 $sqlTracks->execute(array($_SERVER['REMOTE_ADDR']));
 $tracks = $sqlTracks->fetchAll();
-$track = $track[0];
+$track = $tracks[0];
 
 //$title = $icecastInfo['title'].($icecastInfo['artist'] !== " - ".$icecastInfo['artist']? : "");
 
