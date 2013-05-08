@@ -3,6 +3,7 @@
 <html class="popup">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=360">
 	<title><?php echo $radioTitle; ?></title>
 	<link rel="stylesheet" href="style/style.php">
 </head>
