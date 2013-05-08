@@ -249,6 +249,15 @@ button.vote {
 		td:first-child, tr.queued td:first-child {
 			color: #AAA;
 		}
+
+		tr > * {
+			&:nth-child(6), &:nth-child(6) .vote {
+				padding-right: 0px;
+			}
+			&:nth-child(8), &:nth-child(8) .vote {
+				padding-left: 0px;
+			}
+		}
 	}
 
 
