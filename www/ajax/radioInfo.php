@@ -1,5 +1,6 @@
 <?php
 require_once "../config.php";
+header("Content-Type: text/plain;charset=utf-8");
 
 $mounts = json_decode(file_get_contents($icecastpInfoUrl), true);
 unset($mounts[""]);
