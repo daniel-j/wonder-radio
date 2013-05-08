@@ -56,9 +56,11 @@ button.vote {
 #currentSongWrapper {
 	#currentSong {
 		font-weight: bold;
-		-webkit-marquee: auto small infinite scroll 15;
-		overflow-x: -webkit-marquee;
-		white-space: nowrap;
+		@media(-webkit-min-device-pixel-ratio:0) {
+			-webkit-marquee: auto small infinite scroll 15;
+			overflow-x: -webkit-marquee;
+			white-space: nowrap;
+		}
 	}
 
 	#currentSongVote > * {
