@@ -67,6 +67,16 @@ button.vote {
 	
 }
 
+#currentSongWrapper {
+	#currentSong {
+		font-weight: bold;
+	}
+
+	#currentSongVote > * {
+		display: inline-block;
+	}
+}
+
 #wrapper {
 	margin: 0 auto;
 	min-width: 640px;
@@ -152,11 +162,6 @@ button.vote {
 				margin-top: 4px;
 				.gradient(darken(@light, 10%), darken(@light, 5%), darken(@light, 10%));
 			}
-		}
-		
-
-		#currentSong {
-			font-weight: bold;
 		}
 
 		hr {
@@ -341,9 +346,6 @@ footer {
 
 			#currentSongWrapper {
 				text-align: center;
-				#currentSongVote > div {
-					display: inline-block;
-				}
 			}
 		}
 	}
