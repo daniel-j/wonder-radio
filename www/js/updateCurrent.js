@@ -20,8 +20,10 @@
 
 	//document.body.appendChild(scriptContainer);
 
+	var timer = null;
+
 	function update() {
-		setTimeout(update, 15*1000);
+		timer = setTimeout(update, 15*1000);
 		getJSON('ajax/radioInfo.php', function (info) {
 			currentSong.innerHTML = info.title+(info.artist?' - '+info.artist:'');
 			currentListeners.textContent = info.listeners;
@@ -75,6 +77,13 @@
 	}
 
 	update();
+
+	function handleVote(trackId, vote, e) {
+		getText("vote.php?trackId="+trackId+"&vote="+vote, function () {
+			clearTimeout(timer);
+			update();
+		});
+	}
 
 	/*window.handleIcecastMounts = function (mounts) {
 		var info = mounts[mountPoint];
