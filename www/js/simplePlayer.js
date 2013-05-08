@@ -37,7 +37,7 @@
 		audioTag.addEventListener('ended', handleStreamEnded, false);
 		audioTag.addEventListener('canplay', handleStreamCanPlay, false);
 		audioTag.src = stationUrl;
-		audioTag.volume = radioVolume? radioVolume.value : 0.5;
+		audioTag.volume = radioVolume? radioVolume.value : 1.0;
 		audioTag.play();
 	}
 

@@ -67,12 +67,12 @@ button.vote {
 		display: inline-block;
 	}
 }
-
+html.main {
+	background-color: darken(@medium, 50%);
+}
 .main {
 
-	html {
-		background-color: darken(@medium, 50%);
-	}
+	
 	body {
 		font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
 		font-size: 14px;
@@ -158,13 +158,14 @@ button.vote {
 
 			#panelbuttons button {
 				.gradient(@light, darken(@light, 10%), @light);
-				border: 2px solid @dark;
+				border: 2px solid lighten(@dark, 8%);
 				border-bottom-width: 4px;
 				border-radius: 5px;
 				padding: 5px;
 				width: 100%;
 				display: block;
 				position: relative;
+				color: darken(@dark, 20%);
 
 				&:active {
 					border-bottom-width: 2px;
@@ -474,10 +475,99 @@ button.vote {
 	}
 }
 
-
+html.popup {
+	background-color: darken(@medium, 40%);
+	height: 100%;
+}
 .popup {
+	
 	body {
 		font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
 		font-size: 14px;
+		.gradient(darken(@light, 20%), darken(@medium, 40%), darken(@medium, 30%));
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		margin: 0px;
+		padding: 0px;
+		height: 100%;
+	}
+
+	header {
+		overflow: hidden;
+		text-align: center;
+
+		h1 {
+			font-family: "Equestria";
+			color: lighten(@dark, 30%);
+			font-weight: normal;
+			margin: 10px;
+			font-size: 38px;
+		}
+	}
+
+	#wrapper {
+		margin: 0 auto;
+		width: 340px;
+	}
+
+	.pinkbox {
+		.gradient(@medium, darken(@medium, 10%), @medium);
+		padding: 10px;
+		border-radius: 10px;
+	}
+
+
+	#radioPlayer {
+
+		#playstopbtn {
+			width: 80px;
+			.gradient(@light, darken(@light, 5%), @light);
+			border: 2px solid lighten(@dark, 8%);
+			border-radius: 5px;
+			padding: 5px;
+			color: darken(@dark, 20%);
+			font-size: 15px;
+
+			&:active {
+				.gradient(darken(@light, 10%), darken(@light, 5%), darken(@light, 10%));
+			}
+		}
+		#radioVolume {
+			margin-top: -2px;
+			vertical-align: middle;
+			height: 14px;
+			-webkit-appearance:none;
+			.gradient(@light, darken(@light, 5%), @light);
+			display: inline-block;
+			border-radius: 14px;
+			width: 230px;
+
+			&::-webkit-slider-thumb {
+				width: 16px;
+				height: 16px;
+				border-radius: 16px;
+				.gradient(@dark, darken(@dark, 10%), lighten(@dark, 10%));
+				border: 1px solid darken(@dark, 10%);
+				-webkit-appearance:none;
+			}
+		}
+	}
+
+	#currentSongWrapper {
+		margin-top: 10px;
+		text-align: center;
+		color: white;
+	}
+
+	footer {
+		border-radius: 3px;
+		margin-top: 20px;
+		padding: 10px;
+		background-color: rgba(0, 0, 0, 0.05);
+		color: lighten(@medium, 20%);
+
+		a {
+			color: @medium;
+		}
 	}
 }
