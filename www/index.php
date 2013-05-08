@@ -155,7 +155,7 @@ if (isset($_GET['search'])) {
 				<h2>Tune in</h2>
 				<div id="panelbuttons">
 					<button onclick="window.open('visuals/?url=<?php echo $streamUrl; ?>', 'radio-player-visuals', 'width=720,height=480');">Player with visualizations</button>
-					<button onclick="window.open('popup.php', 'radio-player', 'width=340,height=300');">Classic popup player</button>
+					<button onclick="window.open('popup.php', 'radio-player', 'width=360,height=310');">Classic popup player</button>
 					<button id="playstopbtn" disabled>Play</button>
 				</div>
 				<div id="currentSongWrapper">
