@@ -1,6 +1,6 @@
 <?php
-
 require_once dirname(__DIR__)."/config.php";
+header("Content-Type: text/plain;charset=utf-8");
 
 $sqlQueue = $db->prepare("
 	SELECT

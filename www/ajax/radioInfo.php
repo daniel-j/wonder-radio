@@ -28,6 +28,6 @@ echo json_encode(array(
 	"artist" => $track['artist'],
 	"listeners" => $icecastInfo['listeners'],
 	"listeners_peak" => $icecastInfo['listeners_peak'],
-	"rating" => $track['rating'],
-	"vote" => $track['vote']
+	"rating" => intval($track['rating']),
+	"vote" => intval($track['vote'])
 ));
