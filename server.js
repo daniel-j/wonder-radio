@@ -49,16 +49,12 @@ var clientinfo = [];
 function createGeoList() {
 	var list = [];
 
-
-
 	for (var i = 0; i < clientinfo.length; i++) {
 		if (clientinfo[i].ipinfo) {
 			list.push([clientinfo[i].ipinfo.x, clientinfo[i].ipinfo.y]);
 		}
 	}
-
-
-
+	
 	return list;
 }
 
