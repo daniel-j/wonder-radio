@@ -153,14 +153,16 @@ if (isset($_GET['search'])) {
 		<div id="rightcol">
 			<div id="sidepanel">
 				<h2>Tune in</h2>
-				<marquee id="currentSong"></marquee>
-				<br>
 				<div id="panelbuttons">
 					<button onclick="window.open('visuals/?url=<?php echo $streamUrl; ?>', 'radio-player-visuals', 'width=720,height=480');">Player with visualizations</button>
 					<button onclick="window.open('popup.php', 'radio-player', 'width=340,height=300');">Classic popup player</button>
 					<button id="playstopbtn" disabled>Play</button>
 				</div>
-				<div id="currentListenersWrapper">Current listeners: <strong><span id="currentListeners"></span></strong></div>
+				<div id="currentSongWrapper">
+					Current listeners: <strong><span id="currentListeners"></span></strong>
+					<marquee id="currentSong"></marquee>
+					<div id="currentSongVote"></div>
+				</div>
 
 				<?php
 				if ($state['admin']) {

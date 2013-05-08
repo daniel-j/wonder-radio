@@ -35,16 +35,21 @@ MRP.insert({
 </script>
 <!-- ENDS: AUTO-GENERATED MUSES RADIO PLAYER CODE -->
 <br><br>
-<marquee id="currentSong"></marquee>
-Current listeners: <strong><span id="currentListeners"></span></strong>
+<div id="currentSongWrapper">
+	Current listeners: <strong><span id="currentListeners"></span></strong>
+	<marquee id="currentSong"></marquee>
+	<div id="currentSongVote"></div>
+</div>
 
 <?php } else { ?>
 
 <button type="button" id="playstopbtn" disabled></button>
-
 <br><br>
-<marquee id="currentSong"></marquee>
-Current listeners: <strong><span id="currentListeners"></span></strong>
+<div id="currentSongWrapper">
+	Current listeners: <strong><span id="currentListeners"></span></strong>
+	<marquee id="currentSong"></marquee>
+	<div id="currentSongVote"></div>
+</div>
 
 <hr>
 If you can't hear anything, try open this URL in a media player, for example in VLC.:<br>
