@@ -132,7 +132,7 @@ if (isset($_GET['search'])) {
 }
 
 ?><!doctype html>
-<html>
+<html class="main">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">

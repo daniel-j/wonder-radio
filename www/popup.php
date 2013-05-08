@@ -1,9 +1,10 @@
 <?php require_once "config.php"; ?>
 <!doctype html>
-<html>
+<html class="popup">
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $radioTitle; ?></title>
+	<link rel="stylesheet" href="style/style.php">
 	<style>
 	body {
 		color: #555;
