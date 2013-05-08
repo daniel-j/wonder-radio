@@ -24,6 +24,7 @@ $track = $tracks[0];
 //$title = $icecastInfo['title'].($icecastInfo['artist'] !== " - ".$icecastInfo['artist']? : "");
 
 echo json_encode(array(
+	"id" => $track['id'],
 	"title" => empty($track['title'])? $track['file'] : $track['title'],
 	"artist" => $track['artist'],
 	"listeners" => $icecastInfo['listeners'],
