@@ -36,6 +36,36 @@ body {
 	height: 100%;
 }
 
+button.vote {
+	opacity: 0.3;
+	width: 24px;
+	height: 20px;
+	text-indent: -4px;
+	line-height: 10px;
+	color: #444;
+	border: none;
+	font-size: 16px;
+	background-color: transparent;
+	font-weight: bold;
+	cursor: default;
+
+	&.down {
+		text-indent: -3px;
+		line-height: 15px;
+	}
+
+	&.voted {
+		opacity: 1;
+
+		&.up {
+			color: #090;
+		}
+		&.down {
+			color: red;
+		}
+	}
+	
+}
 
 #wrapper {
 	margin: 0 auto;
@@ -209,37 +239,6 @@ body {
 
 	td:first-child, tr.queued td:first-child {
 		color: #AAA;
-	}
-
-	.vote {
-		opacity: 0.3;
-		width: 24px;
-		height: 20px;
-		text-indent: -4px;
-		line-height: 10px;
-		color: #444;
-		border: none;
-		font-size: 16px;
-		background-color: transparent;
-		font-weight: bold;
-		cursor: default;
-
-		&.down {
-			text-indent: -3px;
-			line-height: 15px;
-		}
-
-		&.voted {
-			opacity: 1;
-
-			&.up {
-				color: #090;
-			}
-			&.down {
-				color: red;
-			}
-		}
-		
 	}
 }
 

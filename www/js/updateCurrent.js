@@ -1,13 +1,18 @@
 (function () {
 	'use strict';
 
-	function getJSON(url, cb) {
+	function getText(url, cb) {
 		var x = new XMLHttpRequest();
 		x.open('get', url, true);
 		x.onload = function () {
-			cb(JSON.parse(x.response));
+			cb(x.response);
 		}
 		x.send();
+	}
+	function getJSON(url, cb) {
+		getText(url, function (text) {
+			cb(JSON.parse(text));
+		})
 	}
 
 	var currentSong = document.getElementById('currentSong');
