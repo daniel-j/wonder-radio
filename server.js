@@ -176,7 +176,7 @@ function queueTrack(file, cb) {
 function queueRandom(cb) {
 
 	// Only tracks played more than trackWait minutes ago and got a rating above minimumRating
-	db.query('SELECT file, IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating, lastplayed FROM tracks WHERE (SELECT id FROM queue WHERE tracks.id=queue.trackId) IS NULL AND (lastplayed < date_sub(now(), interval '+trackWait+' minute) OR lastplayed IS NULL) HAVING rating > '+minimumRating+' ORDER BY rating*RAND()*5-plays*RAND()+RAND()*10 DESC LIMIT 1', function(err, rows, fields) {
+	db.query('SELECT file, IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating, lastplayed FROM tracks WHERE (SELECT id FROM queue WHERE tracks.id=queue.trackId) IS NULL AND (lastplayed < date_sub(now(), interval '+trackWait+' minute) OR lastplayed IS NULL) HAVING rating > '+minimumRating+' ORDER BY rating*RAND()*2-plays*RAND()+RAND()*10 DESC LIMIT 1', function(err, rows, fields) {
 		if (err) console.log(err);
 		console.log(rows[0]);
 		if (rows && rows[0]) {
@@ -188,7 +188,7 @@ function queueRandom(cb) {
 			});
 		} else {
 			// Only play those with rating above minimumRating, no matter when they were last played
-			db.query('SELECT file, IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating, lastplayed FROM tracks WHERE (SELECT id FROM queue WHERE tracks.id=queue.trackId) IS NULL HAVING rating > '+minimumRating+' ORDER BY rating*RAND()*5-plays*RAND()+RAND()*10 DESC LIMIT 1', function(err, rows, fields) {
+			db.query('SELECT file, IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating, lastplayed FROM tracks WHERE (SELECT id FROM queue WHERE tracks.id=queue.trackId) IS NULL HAVING rating > '+minimumRating+' ORDER BY rating*RAND()*2-plays*RAND()+RAND()*10 DESC LIMIT 1', function(err, rows, fields) {
 				if (err) console.log(err);
 				console.log(rows[0]);
 				if (rows && rows[0]) {
@@ -199,7 +199,7 @@ function queueRandom(cb) {
 					});
 				} else {
 					// I give up, play a random song
-					db.query('SELECT file, IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating, lastplayed FROM tracks ORDER BY rating*RAND()*5-plays*RAND()+RAND()*10 DESC LIMIT 1', function(err, rows, fields) {
+					db.query('SELECT file, IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating, lastplayed FROM tracks ORDER BY rating*RAND()*2-plays*RAND()+RAND()*10 DESC LIMIT 1', function(err, rows, fields) {
 						if (err) console.log(err);
 						console.log(rows[0]);
 						if (rows && rows.length > 0) {
