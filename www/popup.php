@@ -59,7 +59,7 @@
 		</div>
 
 		<footer>
-			If you can't hear anything, try open this URL in a media player, for example in VLC.:<br>
+			If you can't hear anything, try open this URL in a media player, for example in VLC:<br>
 			<a href="<?php echo $streamUrl; ?>"><?php echo $streamUrl; ?></a><br>
 			You can also try the flash-based player <a href="?flash">here</a>.
 		</footer>
