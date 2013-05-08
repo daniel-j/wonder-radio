@@ -4,10 +4,11 @@ var http = require('http');
 var net = require('net');
 var child_process = require('child_process');
 var mysql = require('mysql');
+var hiddenInfo = require('hidden.json');
 
-var mysqlUser = 'USERNAME';
-var mysqlPassword = 'PASSWORD';
-var mysqlDatabase = 'DATABASE';
+var mysqlUser = hiddenInfo.mysqlUsername;
+var mysqlPassword = hiddenInfo.mysqlPassword;
+var mysqlDatabase = hiddenInfo.mysqlDatabase;
 var mpdPassword = mysqlPassword;
 var icecastPassword = mysqlPassword;
 var ipinfoApiKey = "15ac89298a362c69b7ce1c2cae0f0631f79c514e078fa8b93cef464c7e9a5ab7";

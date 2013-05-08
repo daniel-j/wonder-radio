@@ -230,6 +230,7 @@ if (isset($_GET['search'])) {
 			It's all running on a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> with Arch Linux ARM.<br>
 			<br>
 			View sourcecode: <a href="http://djazz.mine.nu:1337/source.php">source.php</a><br>
+			Sourcecode on github: <a href="https://github.com/daniel-j/wonder-radio">https://github.com/daniel-j/wonder-radio</a><br>
 			<!--Download sourcecode here (mostly outdated): <a href="wonder-radio.zip">wonder-radio.zip</a><br>-->
 			<br>
 			Other radio stations:
