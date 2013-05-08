@@ -38,7 +38,7 @@ MRP.insert({
 <br><br>
 <div id="currentSongWrapper">
 	Current listeners: <strong><span id="currentListeners"></span></strong>
-	<marquee id="currentSong"></marquee>
+	<div id="currentSong"></div>
 	<div id="currentSongVote"></div>
 </div>
 
@@ -48,7 +48,7 @@ MRP.insert({
 <br><br>
 <div id="currentSongWrapper">
 	Current listeners: <strong><span id="currentListeners"></span></strong>
-	<marquee id="currentSong"></marquee>
+	<div id="currentSong"></div>
 	<div id="currentSongVote"></div>
 </div>
 
