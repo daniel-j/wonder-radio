@@ -14,8 +14,8 @@
 	var currentListeners = document.getElementById('currentListeners');
 	var scriptContainer = document.createElement('div');
 	var scriptNode;
-	var jsonpUrl = "http://djazz.mine.nu:1338/info_jsonp.xsl";
-	var mountPoint = '/stream';
+	var jsonpUrl = icecastpInfoUrl;
+	var mountPoint = icecastMount;
 
 	document.body.appendChild(scriptContainer);
 

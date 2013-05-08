@@ -6,10 +6,20 @@ var child_process = require('child_process');
 var mysql = require('mysql');
 var hiddenInfo = require('hidden.json');
 
+// Make a hidden.json that looks like this:
+/*
+	{
+		"mysqlUsername": "USERNAME",
+		"mysqlPassword": "PASSWORD",
+		"mysqlDatabase": "DATABASE"
+	}
+*/
+
 var mysqlUser = hiddenInfo.mysqlUsername;
 var mysqlPassword = hiddenInfo.mysqlPassword;
 var mysqlDatabase = hiddenInfo.mysqlDatabase;
 var mpdPassword = mysqlPassword;
+var icecastMount = "/stream";
 var icecastPassword = mysqlPassword;
 var ipinfoApiKey = "15ac89298a362c69b7ce1c2cae0f0631f79c514e078fa8b93cef464c7e9a5ab7";
 
@@ -28,7 +38,7 @@ console.log("Connected to database");
 var icecastOptions = {
 	port: 8000,
 	auth: 'admin:'+icecastPassword,
-	path: "/admin/listclients.xsl?mount=/stream"
+	path: "/admin/listclients.xsl?mount="+icecastMount
 };
 
 var ipcache = {};
@@ -108,8 +118,8 @@ function updateListeners() {
 			for (var i in mounts) {
 				mounts[i].length--;
 			}
-			if (mounts["/stream"]) {
-				var clients = mounts["/stream"];
+			if (mounts[icecastMount]) {
+				var clients = mounts[icecastMount];
 				var newaddresses = [];
 				for (var i = 0; i < clients.length; i++) {
 					var ip = clients[i].ip;

@@ -21,6 +21,7 @@ function getQueueRemainingTime() {
 }
 
 $remaining = getQueueRemainingTime();
+
 if (isset($_POST['request'])) {
 	$req = intval($_POST['request']);
 	$sql = $db->prepare("SELECT COUNT(*) FROM queue");
@@ -29,8 +30,6 @@ if (isset($_POST['request'])) {
 	$qcount = $rows[0][0];
 	
 	if ($qcount < $queueMaxSize) {
-
-		$remaining = getQueueRemainingTime();
 		
 		if ($remaining === 0) {
 			$sql = $db->prepare("
@@ -132,34 +131,20 @@ if (isset($_GET['search'])) {
 	$searchResult .= "</table>";
 }
 
-
 ?><!doctype html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DJazz Radio</title>
+	<title><?php echo $radioTitle; ?></title>
 	<link rel="stylesheet" href="style/style.php" type="text/css">
-	<script type="text/javascript">
-	
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-5181445-3']);
-	_gaq.push(['_trackPageview']);
-
-	(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-	
-	</script>
 </head>
 <body>
 
 <div id="wrapper">
 	<header id="topheader">
 		<img id="pinkieheadphones" src="img/pinkie-headphones.png" height=120>
-		<h1><a href="./">DJazz's Music Radio</a></h1>
+		<h1><a href="./"><?php echo $radioTitle; ?></a></h1>
 		<h2>Hosted on a Raspberry Pi.</h2>
 	</header>
 
@@ -171,7 +156,7 @@ if (isset($_GET['search'])) {
 				<marquee id="currentSong"></marquee>
 				<br>
 				<div id="panelbuttons">
-					<button onclick="window.open('visuals/', 'radio-player-visuals', 'width=720,height=480');">Player with visualizations</button>
+					<button onclick="window.open('visuals/?url=<?php echo $streamUrl; ?>', 'radio-player-visuals', 'width=720,height=480');">Player with visualizations</button>
 					<button onclick="window.open('popup.php', 'radio-player', 'width=340,height=300');">Classic popup player</button>
 					<button id="playstopbtn" disabled>Play</button>
 				</div>
@@ -229,7 +214,7 @@ if (isset($_GET['search'])) {
 			Powered by <a href="http://www.musicpd.org/">MPD</a>, Icecast2, PHP, MySQL, nginx, ponies, Node.JS and LESS.<br>
 			It's all running on a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> with Arch Linux ARM.<br>
 			<br>
-			View sourcecode: <a href="http://djazz.mine.nu:1337/source.php">source.php</a><br>
+			View sourcecode: <a href="source.php">source.php</a><br>
 			Sourcecode on github: <a href="https://github.com/daniel-j/wonder-radio">https://github.com/daniel-j/wonder-radio</a><br>
 			<!--Download sourcecode here (mostly outdated): <a href="wonder-radio.zip">wonder-radio.zip</a><br>-->
 			<br>
@@ -249,8 +234,11 @@ if (isset($_GET['search'])) {
 </div>
 
 <script>
-var stationUrl = "http://djazz.mine.nu:1338/stream";
+var stationUrl = "<?php echo $streamUrl; ?>";
 var autoplay = false;
+
+var icecastpInfoUrl = "<?php echo $icecastpInfoUrl; ?>";
+var icecastMount = "<?php echo $icecastMount; ?>";
 </script>
 <script src="js/simplePlayer.js"></script>
 <script src="js/updateCurrent.js"></script>

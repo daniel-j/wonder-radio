@@ -1,2 +1,5 @@
 hidden.php
 hidden.json
+node_modules/*
+www/style/style.css
+www/style/*.less.cache
