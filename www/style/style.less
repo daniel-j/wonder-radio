@@ -250,8 +250,14 @@ button.vote {
 			color: #AAA;
 		}
 
-		tr > * {
-			&:nth-child(6), &:nth-child(6) .vote, &:nth-child(8) .vote {
+		tr > th {
+			&:nth-child(6) {
+				text-align: center;
+			}
+		}
+
+		tr > td {
+			&:nth-child(6), &:nth-child(6) .vote, &:nth-child(8), &:nth-child(8) .vote {
 				padding-right: 0px;
 			}
 			&:nth-child(8), &:nth-child(8) .vote {
