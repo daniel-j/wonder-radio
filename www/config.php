@@ -12,7 +12,7 @@ $trackWait = 5*60; // In minutes
 $queueWait = 20; // In minutes
 $queueMaxSize = 10;
 
-// Make a hidden.php that looks like this:
+// Make a hidden.php in the parent folder that looks like this:
 /*
 	<?php
 	$mysqlUser = 'USERNAME';

@@ -6,7 +6,7 @@ var child_process = require('child_process');
 var mysql = require('mysql');
 var hiddenInfo = require('hidden.json');
 
-// Make a hidden.json that looks like this:
+// Make a hidden.json in the parent folder that looks like this:
 /*
 	{
 		"mysqlUsername": "USERNAME",
