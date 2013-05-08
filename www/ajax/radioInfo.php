@@ -2,8 +2,7 @@
 require_once "../config.php";
 header("Content-Type: text/plain;charset=utf-8");
 
-$mounts = json_decode(file_get_contents($icecastpInfoUrl), true);
-unset($mounts[""]);
+$icecastInfo = json_decode(utf8_decode(file_get_contents($icecastpInfoUrl)), true)[$icecastMount];
 
 $sqlTracks = $db->prepare("
 	SELECT
@@ -19,8 +18,16 @@ $sqlTracks = $db->prepare("
 	LIMIT
 		1");
 $sqlTracks->execute(array($_SERVER['REMOTE_ADDR']));
-$track = $sqlTracks->fetchAll()[0];
+$tracks = $sqlTracks->fetchAll();
+$track = $track[0];
 
+//$title = $icecastInfo['title'].($icecastInfo['artist'] !== " - ".$icecastInfo['artist']? : "");
 
-print_r($mounts);
-print_r($track);
+echo json_encode(array(
+	"title" => empty($track['title'])? $track['file'] : $track['title'],
+	"artist" => $track['artist'],
+	"listeners" => $icecastInfo['listeners'],
+	"listeners_peak" => $icecastInfo['listeners_peak'],
+	"rating" => $track['rating'],
+	"vote" => $track['vote']
+));

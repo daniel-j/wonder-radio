@@ -23,7 +23,7 @@ $queueMaxSize = 10;
 */
 
 $streamUrl = "http://".$icecastHost.":".$icecastPort.$icecastMount;
-$icecastpInfoUrl = "http://".$icecastHost.":".$icecastPort."/info_jsonp.xsl";
+$icecastpInfoUrl = "http://".$icecastHost.":".$icecastPort."/info_json.xsl";
 
 session_cache_expire(5*24*60*60);
 session_start();
