@@ -78,6 +78,7 @@ html.main {
 		font-size: 14px;
 		.gradient(darken(@medium, 50%), darken(@medium, 50%), darken(@medium, 30%));
 		background-repeat: no-repeat;
+		background-attachment: fixed;
 		margin: 0px;
 		padding-bottom: 20px;
 		cursor: default;
@@ -159,19 +160,17 @@ html.main {
 			#panelbuttons button {
 				.gradient(@light, darken(@light, 10%), @light);
 				border: 2px solid lighten(@dark, 8%);
-				border-bottom-width: 4px;
+				color: darken(@dark, 20%);
 				border-radius: 5px;
 				padding: 5px;
-				width: 100%;
-				display: block;
-				position: relative;
-				color: darken(@dark, 20%);
+				
 
 				&:active {
-					border-bottom-width: 2px;
-					margin-top: 4px;
 					.gradient(darken(@light, 10%), darken(@light, 5%), darken(@light, 10%));
 				}
+
+				width: 100%;
+				display: block;
 			}
 
 			hr {
@@ -196,11 +195,18 @@ html.main {
 		border-spacing:0;
 		border-collapse:collapse;
 		width: 100%;
+		font-size: 13px;
+
+		thead tr, tr.queued {
+			background-color: lighten(@light, 5%);
+		}
 
 		th {
 			padding: 5px;
 			text-align: left;
 			font-size: 13px;
+
+			color: @dark;
 		}
 
 		td {
@@ -208,9 +214,31 @@ html.main {
 			vertical-align: top;
 			color: #333;
 			/*border-top: 5px solid transparent;*/
+
+			&:first-child {
+				color: #AAA;
+			}
 		}
 
-		tr > * {
+		tr {
+			&:not(.current):hover td {
+				background-color: lighten(@light, 7%);
+			}
+			&.queued td, &.unqueueable td {
+				color: #999;
+			}
+		}
+	}
+
+	.playlist {
+
+		tr > th {
+			&:nth-child(6) {
+				text-align: center;
+			}
+		}
+
+		tr > td {
 			&:nth-child(4), &:nth-child(5) {
 				text-align: right;
 			}
@@ -218,48 +246,27 @@ html.main {
 				text-align: center;
 			}
 		}
-	}
 
-	.playlist tr:not(.current):hover td {
-		background-color: lighten(@light, 7%);
-	}
-	.search-result tr:hover td {
-		background-color: lighten(@light, 10%);
-	}
-
-	.playlist {
-
-		thead tr, tr.queued {
-			background-color: lighten(@light, 5%);
-		}
-
-		th {
-			color: @dark;
-		}
-
-		tr.queued td {
-			color: #888;
-		}
-
-		tr.current td {
+		tr.current {
 			background-color: @medium;
-			color: white;
-			font-weight: bold;
+			font-size: 14px;
 
-			&:first-child {
-				text-align: center;
-
-				&:before {
-					content: "▶";
+			td {
+				color: white;
+				&:nth-child(2), &:nth-child(3) {
 					font-weight: bold;
-					font-size: 16px;
-					color: @light;
+				}
+				&:first-child {
+					text-align: center;
+
+					&:before {
+						content: "▶";
+						font-weight: bold;
+						font-size: 16px;
+						color: @light;
+					}
 				}
 			}
-		}
-
-		td:first-child, tr.queued td:first-child {
-			color: #AAA;
 		}
 
 		tr > th {
@@ -272,7 +279,7 @@ html.main {
 			&:nth-child(6) {
 				padding-left: 10px;
 			}
-			&:nth-child(6), &:nth-child(6) .vote, &:nth-child(8), &:nth-child(8) .vote {
+			&:nth-child(6), &:nth-child(6) .vote, &:nth-child(8) .vote {
 				padding-right: 0px;
 			}
 			&:nth-child(8), &:nth-child(8) .vote {
@@ -290,25 +297,68 @@ html.main {
 		h2 {
 			color: @medium;
 			margin: 10px;
+			margin-bottom: 0px;
 			font-family: Equestria;
 			font-weight: normal;
 			font-size: 30px;
 		}
 		form {
 			padding: 10px;
-			input[type='search'] {
+			padding-top: 0px;
+
+			input[name='search'] {
 				width: 300px;
+				padding: 4px;
+				font-size: 16px;
+				border: 2px solid lighten(@dark, 8%);
+				margin: 0px;
+				border-radius: 3px;
+
+				&:focus {
+					outline-color: @dark;
+				}
+			}
+			input[type='submit'] {
+				width: 80px;
+				.gradient(@light, darken(@light, 10%), @light);
+				border: 2px solid lighten(@dark, 8%);
+				color: darken(@dark, 20%);
+				border-radius: 5px;
+				padding: 5px;
+				margin: 0px;
+				font-size: 15px;
+				
+
+				&:active {
+					.gradient(darken(@light, 10%), darken(@light, 5%), darken(@light, 10%));
+				}
+			}
+		}
+
+		#searchResult {
+			display: none;
+
+			&.show {
+				display: table;
 			}
 		}
 		
 	}
 
 	.search-result {
-		td {
-			color: #444;
 
-			&:first-child {
-				color: #888;
+		border-top: 1px solid darken(@light, 2%);
+		background-color: white;
+
+		tr > * {
+			&:nth-child(4), &:nth-child(5), &:nth-child(6) {
+				text-align: right;
+			}
+		}
+
+		tr.queued td {
+			&:nth-child(2), &:nth-child(3) {
+				font-weight: bold;
 			}
 		}
 
@@ -320,6 +370,7 @@ html.main {
 			padding: 1px 10px;
 			display: block;
 			margin: 0px;
+			width: 100%;
 		}
 	}
 

@@ -35,8 +35,7 @@ $sqlTracks->execute(array($_SERVER['REMOTE_ADDR']));
 $tracks = $sqlTracks->fetchAll();
 
 $json = array();
-$now = time();
-$json['time'] = $now;
+$json['time'] = time();
 $json['queue'] = [];
 $json['history'] = [];
 

@@ -1,147 +1,8 @@
 <?php
 require_once "config.php";
-
-function getQueueRemainingTime() {
-	global $db, $queueWait;
-	$sql = $db->prepare("
-		SELECT
-			$queueWait-TIMESTAMPDIFF(MINUTE, added, NOW()) as remaining
-		FROM
-			queue
-		WHERE
-			ip=INET_ATON(?) AND added > DATE_SUB(NOW(), INTERVAL $queueWait MINUTE)
-		ORDER BY
-			added DESC
-		LIMIT 100");
-	$sql->execute(array($_SERVER['REMOTE_ADDR']));
-	$resultQueue = $sql->fetchAll();
-	//echo "<pre>";print_r($resultQueue);echo "</pre>";
-	$remaining = isset($resultQueue[0]) ? ceil($resultQueue[0]['remaining']) : 0;
-	return $remaining;
-}
-
-function getTotalTrackCount() {
-	global $db;
-	$sql = $db->prepare("
-		SELECT
-			COUNT(tracks.id) as trackCount
-		FROM
-			tracks");
-	$sql->execute();
-	return intval($sql->fetch()['trackCount']);
-}
-
+require_once "funcs.php";
 
 $remaining = getQueueRemainingTime();
-
-if (isset($_POST['request'])) {
-	$req = intval($_POST['request']);
-	$sql = $db->prepare("SELECT COUNT(*) FROM queue");
-	$sql->execute();
-	$rows = $sql->fetchAll();
-	$qcount = $rows[0][0];
-	
-	if ($qcount < $queueMaxSize) {
-		
-		if ($remaining === 0) {
-			$sql = $db->prepare("
-				SELECT
-					tracks.id
-				FROM
-					tracks
-				LEFT JOIN queue ON
-					tracks.id=queue.trackId
-				WHERE
-					tracks.id = ? AND queue.id IS NULL AND (lastplayed < DATE_SUB(NOW(), INTERVAL $trackWait MINUTE) OR lastplayed IS NULL)
-				LIMIT
-					1");
-			$sql->execute(array($req));
-			if($sql->rowCount() > 0) {
-				$sql = $db->prepare("INSERT INTO queue (trackId, ip) VALUES (?,INET_ATON(?))");
-				$sql->execute(array($req, $_SERVER['REMOTE_ADDR']));
-
-				$sql = $db->prepare("UPDATE tracks SET requests = requests + 1 WHERE id = ?");
-				$sql->execute(array($req));
-
-				$sql = $db->prepare("SELECT id FROM queue ORDER BY id ASC LIMIT $queueMaxSize, 99999999999999999");
-				$sql->execute();
-				$rows = $sql->fetchAll();
-				foreach ($rows as $row) {
-					$sql = $db->prepare("DELETE FROM queue WHERE id = ?");
-					$sql->execute(array($row['id']));
-				}
-			}
-			header("Location: ./");
-		} else {
-			echo "<h2>You must wait ".$remaining." more minute(s) before you can queue another, or until the track you queued has been played</h2>
-			<a href=\"./\" onclick=\"history.back(); return false;\">Go back</a><pre>";
-			print_r($result);
-		}
-	} else {
-		echo "Queue is full";
-	}
-	exit;
-}
-
-$searchResult = "";
-if (isset($_GET['search'])) {
-	$search = $_GET['search'];
-	$sql = $db->prepare("SELECT COUNT(*) FROM queue");
-	$sql->execute();
-	$qcount = $sql->fetchAll()[0][0];
-
-	
-
-	$sql = $db->prepare("
-		SELECT
-			tracks.*,
-			queue.id as qid,
-			CASE
-				WHEN lastplayed IS NOT NULL THEN
-					TIME_FORMAT(lastplayed, '%H:%i')
-				ELSE
-					''
-			END as timePlayed,
-			MATCH(tags) AGAINST(?) as relevance,
-			TIMESTAMPDIFF(MINUTE,lastplayed,NOW()) as lastplayedTime,
-			IFNULL((SELECT SUM(vote) FROM votes WHERE tracks.id=votes.trackId), 0) as rating
-		FROM
-			tracks
-		LEFT JOIN queue ON
-			tracks.id=queue.trackId
-		WHERE
-			MATCH(tags) AGAINST(?) OR tags LIKE ?
-		ORDER BY
-			lastplayedTime*rating DESC
-		LIMIT 100");
-	
-	$sql->execute(array($search, $search, "%".$search."%"));
-	
-	$result = $sql->fetchAll();
-
-	$searchResult .= "<table class=\"search-result\"><tr><th width=1></th><th>Title</th><th>Artist</th><th width=1>Plays</th><th width=1>Requests</th><th width=1>Rating</th><th width=1></th></tr>";
-	foreach ($result as $track) {
-		$title = empty($track['title'])? $track['file'] : $track['title'];
-		$requestButton = "";
-		if ($track['qid'] !== NULL) {
-			$requestButton = "Queued";
-		} else if ($track['lastplayedTime'] != NULL && $track['lastplayedTime'] < $trackWait) {
-			
-			$requestButton = "<strong>".($trackWait-$track['lastplayedTime'])."</strong>&nbsp;min&nbsp;left";
-		} else if ($qcount >= $queueMaxSize) {
-			$requestButton = "Queue&nbsp;full";
-		} else if ($remaining > 0) {
-			$requestButton = "-";
-		} else {
-			$requestButton = "<form method=\"post\" action=\"./\"><input type=\"hidden\" name=\"request\" value=\"{$track['id']}\"><button>Request</button></form>";
-		}
-
-		$rating = intval($track['rating']);
-		
-		$searchResult .= "	<tr><td>{$track['timePlayed']}</td><td>{$title}</td><td>{$track['artist']}</td><td align=right>{$track['plays']}</td><td align=right>{$track['requests']}</td><td align=right>{$rating}</td><td>".$requestButton."</td></tr>\n";
-	}
-	$searchResult .= "</table>";
-}
 
 ?><!doctype html>
 <html class="main">
@@ -205,19 +66,26 @@ if (isset($_GET['search'])) {
 	<div id="searchContainer">
 		
 		<a name="search"><h2>Search &amp; request</h2></a>
-		<form method="get" action="#search">
-			<input type="search" name="search"<?php if(isset($_GET['search'])) echo " value=\"".$_GET['search']."\" autofocus"; ?>>
+		<form id="searchForm">
+			<input type="text" id="searchInput" name="search"<?php if(isset($_GET['search'])) echo " value=\"".htmlentities($_GET['search'])."\" autofocus"; ?>>
 			<input type="submit" value="Search">
 
+			<div id="queueWait"></div>
+
 			<?php
-			if ($remaining !== 0) {
+			/*if ($remaining !== 0) {
 				$s = $remaining === 1 ? "" : "s";
-				echo "<br>You must wait <strong>".$remaining."</strong> more minute$s before you can queue another track, or until the last track that you enqueued has been played.<br><br>";
-			}
+				echo "<br>You must wait <strong>".$remaining."</strong> more minute$s before you can queue another track, or until the last track that you enqueued has been played.<br>";
+			}*/
 			?>
 		</form>
 
-		<?=$searchResult?>
+		<table id="searchResult" class="search-result">
+			<thead>
+				<tr><th width=1></th><th>Title</th><th>Artist</th><th width=1>Plays</th><th width=1>Requests</th><th width=1>Rating</th><th width=1></th></tr>
+			</thead>
+			<tbody id="searchBody"></tbody>
+		</table>
 
 	</div>
 	<footer>
@@ -257,6 +125,6 @@ var icecastMount = "<?php echo $icecastMount; ?>";
 </script>
 <script src="js/simplePlayer.js"></script>
 <script src="js/updateCurrent.js"></script>
-<script src="js/updatePlaylist.js"></script>
+<script src="js/updateMain.js"></script>
 </body>
 </html>

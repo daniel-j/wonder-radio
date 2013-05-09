@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once dirname(__DIR__)."/config.php";
 
 if (isset($_GET['vote']) && isset($_GET['trackId'])) {
 	$vote = intval($_GET['vote']);
