@@ -8,7 +8,7 @@ $icecastPort = 1338;
 $icecastMount = "/stream";
 $radioTitle = "DJazz's Music Radio";
 
-$trackWait = 5*60; // In minutes
+$trackWait = 2*60; // In minutes
 $queueWait = 20; // In minutes
 $queueMaxSize = 10;
 
