@@ -11,6 +11,7 @@ $remaining = getQueueRemainingTime();
 	<meta name="viewport" content="width=device-width">
 	<title><?php echo $radioTitle; ?></title>
 	<link rel="stylesheet" href="style/style.php" type="text/css">
+	<link rel="icon" type="image/png" href="img/logo.png">
 </head>
 <body>
 
