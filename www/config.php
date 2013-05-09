@@ -24,6 +24,8 @@ $queueMaxSize = 10;
 
 	$localIcecastHost = '127.0.0.1';
 	$localIcecastPort = 8000;
+
+	$musicPath = "/path/to/mpd's/music/folder/";
 */
 
 require_once dirname(__DIR__)."/hidden.php";

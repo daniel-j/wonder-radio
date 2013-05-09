@@ -28,6 +28,7 @@ CREATE TABLE `tracks` (
   `file` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `artist` varchar(255) NOT NULL,
+  `album` varchar(255) NOT NULL,
   `tags` text NOT NULL,
   `time` int(11) NOT NULL,
   `plays` int(11) NOT NULL DEFAULT '0',

@@ -20,7 +20,7 @@ if (isset($_GET['truncate'])) {
 
 exec("mpc -h $mpdPassword@:: update --wait -q");
 
-exec("mpc -h $mpdPassword@:: listall -f %file%@@%title%@@%artist%@@%time% -q", $rawlist);
+exec("mpc -h $mpdPassword@:: listall -f %file%@@%title%@@%artist%@@%album%@@%time% -q", $rawlist);
 
 $sqlTracks = $db->prepare("DELETE FROM tracks WHERE id = ?");
 $sqlQueue = $db->prepare("DELETE FROM queue WHERE trackId = ?");
@@ -33,10 +33,10 @@ shuffle($rawlist);
 foreach ($rawlist as $rawline) {
 	$ok = true;
 	$line = explode("@@", $rawline);
-	if (count($line) == 4) {
-		$line[3] = array_reverse(explode(":", $line[3]));
+	if (count($line) == 5) {
+		$line[4] = array_reverse(explode(":", $line[4]));
 		$time = 0;
-		foreach ($line[3] as $i => $n) {
+		foreach ($line[4] as $i => $n) {
 			$t = intval($n);
 			switch ($i) {
 				case 0:
@@ -56,7 +56,7 @@ foreach ($rawlist as $rawline) {
 			}
 		}
 		if ($ok) {
-			$line[3] = $time;
+			$line[4] = $time;
 
 			$list[] = $line;
 			$filenames[] = $line[0];
@@ -91,12 +91,12 @@ foreach ($existing as $track) {
 }
 
 
-$sql = $db->prepare("INSERT INTO tracks (file, title, artist, tags, time) VALUES(?,?,?,?,?)");
+$sql = $db->prepare("INSERT INTO tracks (file, title, artist, album, tags, time) VALUES(?,?,?,?,?)");
 
 foreach ($list as $metadata) {
 	$tags = preg_replace('~[\W\_]~', ' ', basename($metadata[0], pathinfo($metadata[0], PATHINFO_EXTENSION))." ".$metadata[1]." ".$metadata[2]);
 	
-	@$sql->execute(array($metadata[0], $metadata[1], $metadata[2], $tags, $metadata[3]));
+	@$sql->execute(array($metadata[0], $metadata[1], $metadata[2], $metadata[3], $tags, $metadata[4]));
 	if (intval($sql->errorCode()) === 0) {
 		echo "Added ".$metadata[0]."<br>";
 	}
