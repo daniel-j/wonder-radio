@@ -20,6 +20,18 @@ function getQueueRemainingTime() {
 	return $remaining;
 }
 
+function getTotalTrackCount() {
+	global $db;
+	$sql = $db->prepare("
+		SELECT
+			COUNT(tracks.id) as trackCount
+		FROM
+			tracks");
+	$sql->execute();
+	return intval($sql->fetch()['trackCount']);
+}
+
+
 $remaining = getQueueRemainingTime();
 
 if (isset($_POST['request'])) {
@@ -212,6 +224,7 @@ if (isset($_GET['search'])) {
 		<img id="basscannon" src="img/bass-cannon.png" width=200>
 		<canvas width=454 height=244 id="geocanvas"></canvas>
 		<div id="footercontent">
+			<?=getTotalTrackCount()?> tracks in database.<br>
 			Created by <a href="http://djazz.mine.nu/">djazz</a><br>
 			Powered by <a href="http://www.musicpd.org/">MPD</a>, Icecast2, PHP, MySQL, nginx, ponies, Node.JS and LESS.<br>
 			It's all running on a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> with Arch Linux ARM.<br>
