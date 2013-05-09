@@ -22,7 +22,7 @@ foreach($tracks as $track) {
 	$fileinfo = $getID3->analyze($musicPath.$track['file']);
 	$id3 = $fileinfo['tags']['id3v2'];
 	echo "<tr><td rowspan=2>{$track['file']}</td><td>{$track['title']}</td><td>{$track['artist']}</td><td>{$track['album']}</td></tr>";
-	echo "<tr><td>".$id3['title'][0]."</td><td>".$id3['artist'][0]."</td><td>".$id3['album']."</td></tr>";
+	echo "<tr><td>".$id3['title'][0]."</td><td>".$id3['artist'][0]."</td><td>".$id3['album'][0]."</td></tr>";
 
 }
 echo "</table>";
