@@ -84,7 +84,7 @@
 	update();
 
 	function handleVote(trackId, vote, e) {
-		getText("vote.php?trackId="+trackId+"&vote="+vote, function () {
+		getText("ajax/vote.php?trackId="+trackId+"&vote="+vote, function () {
 			clearTimeout(timer);
 			update();
 		});
