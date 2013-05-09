@@ -19,7 +19,7 @@ $tracks = $sql->fetchAll();
 echo "<table border>";
 echo "<head><tr><th>Filename</th><th>Title</th><th>Artist</th><th>Album</th></tr></thead>";
 foreach($tracks as $track) {
-	$fileinfo = $getID3->analyze($track['file']);
+	$fileinfo = $getID3->analyze($musicPath.$track['file']);
 	print_r($fileinfo);
 	echo "<tr><td rowspan=2>{$track['file']}</td><td>{$track['title']}</td><td>{$track['artist']}</td><td>{$track['album']}</td></tr>";
 	echo "<tr><td>{$track['title']}</td><td>{$track['artist']}</td><td>{$track['album']}</td></tr>";
