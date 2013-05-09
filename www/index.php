@@ -208,17 +208,17 @@ if (isset($_GET['search'])) {
 		<form method="get" action="#search">
 			<input type="search" name="search"<?php if(isset($_GET['search'])) echo " value=\"".$_GET['search']."\" autofocus"; ?>>
 			<input type="submit" value="Search">
+
+			<?php
+			if ($remaining !== 0) {
+				$s = $remaining === 1 ? "" : "s";
+				echo "<br>You must wait <strong>".$remaining."</strong> more minute$s before you can queue another track, or until the last track that you enqueued has been played.<br><br>";
+			}
+			?>
 		</form>
-		<?php
 
-		
-		if ($remaining !== 0) {
-			echo "<br>You must wait <strong>".$remaining."</strong> more minute(s) before you can queue another track, or until the last track that you enqueued has been played.<br><br>";
-		}
+		<?=$searchResult?>
 
-		echo $searchResult;
-
-		?>
 	</div>
 	<footer>
 		<img id="basscannon" src="img/bass-cannon.png" width=200>
