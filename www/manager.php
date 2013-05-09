@@ -12,7 +12,7 @@ require_once('../getid3/getid3/getid3.php');
 // Initialize getID3 engine
 $getID3 = new getID3;
 
-$sql = $db->prepare("SELECT id, file, title, artist, album FROM tracks ORDER BY file");
+$sql = $db->prepare("SELECT id, file, title, artist, album FROM tracks ORDER BY file LIMIT 20");
 $sql->execute();
 $tracks = $sql->fetchAll();
 
