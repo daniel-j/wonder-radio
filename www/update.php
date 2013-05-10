@@ -91,7 +91,7 @@ foreach ($existing as $track) {
 }
 
 
-$sql = $db->prepare("INSERT INTO tracks (file, title, artist, album, tags, time) VALUES(?,?,?,?,?)");
+$sql = $db->prepare("INSERT INTO tracks (file, title, artist, album, tags, time) VALUES(?,?,?,?,?,?)");
 
 foreach ($list as $metadata) {
 	$tags = preg_replace('~[\W\_]~', ' ', basename($metadata[0], pathinfo($metadata[0], PATHINFO_EXTENSION))." ".$metadata[1]." ".$metadata[2]);
