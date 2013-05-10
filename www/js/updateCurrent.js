@@ -25,9 +25,12 @@
 
 	//document.body.appendChild(scriptContainer);
 
+	var currentTrackId = 0;
+
 	var timer = null;
 
 	function update() {
+		clearTimeout(update);
 		timer = setTimeout(update, 10*1000);
 		getJSON('ajax/radioInfo.php', function (info) {
 			currentSong.innerHTML = info.title+(info.artist?' - '+info.artist:'');
@@ -66,6 +69,11 @@
 			currentSongVote.appendChild(voteUpBtn);
 			currentSongVote.appendChild(currentSongRating);
 			currentSongVote.appendChild(voteDownBtn);
+
+			if (currentTrackId !== 0 && currentTrackId !== info.id && typeof updateMain === 'function') {
+				updateMain(info.id);
+			}
+			currentTrackId = info.id;
 		});
 
 		/*if (scriptNode) {
@@ -86,6 +94,9 @@
 	function handleVote(trackId, vote, e) {
 		getText("ajax/vote.php?trackId="+trackId+"&vote="+vote, function () {
 			clearTimeout(timer);
+			if (typeof updateMain === 'function') {
+				updateMain();
+			}
 			update();
 		});
 	}
@@ -97,5 +108,11 @@
 			currentListeners.textContent = info.listeners;
 		}
 	};*/
+
+	window.updateNowPlaying = function (trackId) {
+		if (trackId === undefined || currentTrackId !== trackId) {
+			update();
+		}
+	};
 
 }());

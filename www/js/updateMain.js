@@ -59,10 +59,15 @@
 	var searchXhr = null;
 	var mapXhr = null;
 
+	var currentTrackId = 0;
+
 	function handleVote(trackId, vote, e) {
 		getText("ajax/vote.php?trackId="+trackId+"&vote="+vote, function () {
 			updatePlaylist();
 			updateSearch();
+			if (typeof updateNowPlaying === 'function') {
+				updateNowPlaying();
+			}
 		});
 	}
 
@@ -114,6 +119,12 @@
 				}
 				if (i === 0) {
 					row.classList.add('current');
+
+					if (currentTrackId !== 0 && currentTrackId !== track.id && typeof updateNowPlaying === 'function') {
+						updateNowPlaying(track.id);
+					}
+					currentTrackId = track.id;
+
 				} else {
 					cells[0].textContent = prettyTimestamp(track.timePlayed);
 				}
@@ -164,6 +175,7 @@
 	function updateSearch(userAction) {
 		if (searchXhr) searchXhr.abort();
 		clearTimeout(timerSearch);
+		if (searchQuery === '') return;
 		timerSearch = setTimeout(updateSearch, 20*1000);
 
 		searchXhr = getJSON("ajax/search.php?q="+encodeURIComponent(searchQuery), function (response) {
@@ -286,4 +298,11 @@
 		e.preventDefault();
 		doSearch();
 	}, false);
+
+	window.updateMain = function (trackId) {
+		if (trackId === undefined || currentTrackId !== trackId) {
+			updatePlaylist();
+			updateSearch();
+		}
+	}
 }());
