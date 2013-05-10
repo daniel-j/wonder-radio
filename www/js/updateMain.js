@@ -77,7 +77,7 @@
 	function updatePlaylist(userAction) {
 		if (playlistXhr) playlistXhr.abort();
 		clearTimeout(timerPlaylist);
-		timerPlaylist = setTimeout(updatePlaylist, 20*1000);
+		timerPlaylist = setTimeout(updatePlaylist, 10*1000);
 
 		playlistXhr = getJSON('ajax/playlist.php', function (playlist) {
 			playlistXhr = null;
@@ -251,7 +251,7 @@
 	function updateMap() {
 		if (mapXhr) mapXhr.abort();
 		clearTimeout(timerMap);
-		timerMap = setTimeout(updateMap, 20*1000);
+		timerMap = setTimeout(updateMap, 30*1000);
 
 		getJSON("ajax/map.php", function (coords) {
 			mapXhr = null;

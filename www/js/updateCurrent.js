@@ -28,7 +28,7 @@
 	var timer = null;
 
 	function update() {
-		timer = setTimeout(update, 15*1000);
+		timer = setTimeout(update, 10*1000);
 		getJSON('ajax/radioInfo.php', function (info) {
 			currentSong.innerHTML = info.title+(info.artist?' - '+info.artist:'');
 			currentListeners.textContent = info.listeners;
