@@ -99,6 +99,8 @@ foreach ($list as $metadata) {
 	@$sql->execute(array($metadata[0], $metadata[1], $metadata[2], $metadata[3], $tags, $metadata[4]));
 	if (intval($sql->errorCode()) === 0) {
 		echo "Added ".$metadata[0]."<br>";
+	} else {
+		echo $sql->errorCode()."<br>";
 	}
 }
 
