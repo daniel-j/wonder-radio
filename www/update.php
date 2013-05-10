@@ -91,16 +91,22 @@ foreach ($existing as $track) {
 }
 
 
-$sql = $db->prepare("INSERT INTO tracks (file, title, artist, album, tags, time) VALUES(?,?,?,?,?,?)");
+$sqlInsert = $db->prepare("INSERT INTO tracks (file, title, artist, album, tags, time) VALUES(?,?,?,?,?,?)");
+$sqlUpdate = $db->prepare("UPDATE tracks SET title = ?, artist = ?, album = ?, tags = ?, time = ? WHERE file = ?");
 
 foreach ($list as $metadata) {
 	$tags = preg_replace('~[\W\_]~', ' ', basename($metadata[0], pathinfo($metadata[0], PATHINFO_EXTENSION))." ".$metadata[1]." ".$metadata[2]);
 	
-	@$sql->execute(array($metadata[0], $metadata[1], $metadata[2], $metadata[3], $tags, $metadata[4]));
-	if (intval($sql->errorCode()) === 0) {
+	@$sqlInsert->execute(array($metadata[0], $metadata[1], $metadata[2], $metadata[3], $tags, $metadata[4]));
+	if (intval($sqlInsert->errorCode()) === 0) {
 		echo "Added ".$metadata[0]."<br>";
-	} else {
-		echo $sql->errorCode()."<br>";
+	} else if (intval($sqlInsert->errorCode()) === 23000) {
+		@$sqlUpdate->execute(array($metadata[1], $metadata[2], $metadata[3], $tags, $metadata[4], $metadata[0]));
+		if (intval($sqlUpdate->errorCode()) === 0) {
+			echo "Updated metadata ".$metadata[0]."<br>";
+		} else {
+			echo "Error ".$metadata[0]." ".$sqlUpdate->errorCode()."<br>";
+		}
 	}
 }
 
