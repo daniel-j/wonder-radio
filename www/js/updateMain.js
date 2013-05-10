@@ -50,7 +50,9 @@
 
 	var timerPlaylist = null;
 	var timerSearch = null;
+	var timerSearchInput = null;
 	var timerMap = null;
+	var timerSearchInput = null;
 
 	var playlistXhr = null;
 	var searchXhr = null;
@@ -223,6 +225,7 @@
 	}
 
 	function doSearch() {
+		clearTimeout(timerSearchInput);
 		searchQuery = searchInput.value;
 		if (searchQuery === "") {
 			removeSearch();
@@ -268,6 +271,15 @@
 	updateMap();
 	doSearch();
 	
+	searchInput.addEventListener('input', function () {
+		clearTimeout(timerSearchInput);
+
+		if (searchInput.value === '') {
+			removeSearch();
+		} else {
+			timerSearchInput = setTimeout(doSearch, 1*1000);
+		}
+	});
 
 	searchForm.addEventListener('submit', function (e) {
 		e.preventDefault();
