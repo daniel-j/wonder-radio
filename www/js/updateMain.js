@@ -38,6 +38,7 @@
 	var geocanvas = document.getElementById('geocanvas');
 	var geoctx = geocanvas.getContext('2d');
 
+	var playlistContainer = document.getElementById('playlistContainer');
 	var playlistBody = document.getElementById('playlistBody');
 	var searchContainer = document.getElementById('searchContainer');
 	var searchResult = document.getElementById('searchResult');
@@ -153,7 +154,7 @@
 			}
 
 			if (userAction) {
-				document.body.scrollTop = 0;
+				playlistContainer.scrollIntoView();
 			}
 		});
 		
@@ -277,7 +278,7 @@
 		if (searchInput.value === '') {
 			removeSearch();
 		} else {
-			timerSearchInput = setTimeout(doSearch, 1*1000);
+			timerSearchInput = setTimeout(doSearch, 1000);
 		}
 	});
 
