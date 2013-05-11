@@ -45,9 +45,6 @@ if ($search !== "") {
 
 	$searchResult["result"] = array();
 
-
-
-
 	$sql = $db->prepare("
 		SELECT
 			tracks.*,
@@ -63,7 +60,7 @@ if ($search !== "") {
 		WHERE
 			MATCH(tags) AGAINST(?) OR tags LIKE ?
 		ORDER BY
-			relevance DESC
+			added DESC, relevance DESC
 		LIMIT
 			$offset, $searchResultsPerPage");
 
@@ -90,8 +87,8 @@ if ($search !== "") {
 
 		$searchResult['result'][] = array(
 			"id" => intval($track['id']),
-			"title" => $title,
-			"artist" => $track['artist'],
+			"title" => utf8_encode($title),
+			"artist" => utf8_encode($track['artist']),
 			"timePlayed" => intval($track['timePlayed']),
 			"playCount" => intval($track['plays']),
 			"requestCount" => intval($track['requests']),

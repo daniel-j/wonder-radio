@@ -118,9 +118,9 @@ foreach ($list as $suggestion) {
 		'time' => $suggestion['time'],
 		'rejected' => intval($suggestion['rejected']) !== 0,
 		'accepted' => intval($suggestion['accepted']) !== 0,
-		'username' => $suggestion['username'],
-		'suggestion' => $suggestion['suggestion'],
-		'reason' => $suggestion['reason']
+		'username' => utf8_encode($suggestion['username']),
+		'suggestion' => utf8_encode($suggestion['suggestion']),
+		'reason' => utf8_encode($suggestion['reason'])
 	);
 }
 
