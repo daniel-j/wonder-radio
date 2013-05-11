@@ -69,7 +69,6 @@ if ($page < $lastpage) {
 }
 $pagination .= "</div>";
 
-
 $sql = $db->prepare("SELECT id, file, title, artist, album FROM tracks ORDER BY file LIMIT $offset, $songsPerPage");
 $sql->execute();
 $tracks = $sql->fetchAll();

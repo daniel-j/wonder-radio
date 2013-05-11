@@ -12,9 +12,25 @@
 	}
 
 	function getJSON(url, cb) {
-		getText(url, function (text) {
+		return getText(url, function (text) {
 			cb(JSON.parse(text));
-		})
+		});
+	}
+
+	function postForm(url, form, cb) {
+		var x = new XMLHttpRequest();
+		x.open('post', url, true);
+		x.onload = function () {
+			cb(x.response);
+		}
+		x.send(new FormData(form));
+		return x;
+	}
+
+	function postFormJSON(url, form, cb) {
+		return postForm(url, form, function (text) {
+			cb(JSON.parse(text));
+		});
 	}
 
 	function prettyTimestamp(t) {
@@ -40,13 +56,29 @@
 
 	var playlistContainer = document.getElementById('playlistContainer');
 	var playlistBody = document.getElementById('playlistBody');
+
 	var searchContainer = document.getElementById('searchContainer');
+	var toggleSearch = document.getElementById('toggleSearch');
 	var searchResult = document.getElementById('searchResult');
 	var searchBody = document.getElementById('searchBody');
 	var searchForm = document.getElementById('searchForm');
 	var searchInput = document.getElementById('searchInput');
+	var queueWait = document.getElementById('queueWait');
+	var searchPagination = document.getElementById('searchPagination');
+
+	var suggestContainer = document.getElementById('suggestContainer');
+	var toggleSuggestions = document.getElementById('toggleSuggestions');
+	var suggestForm = document.getElementById('suggestForm');
+	var suggestWait = document.getElementById('suggestWait');
+	var suggestTable = document.getElementById('suggestTable');
+	var suggestBody = document.getElementById('suggestBody');
+	var suggestPagination = document.getElementById('suggestPagination');
 
 	var searchQuery = "";
+
+	var searchPage = 1;
+	var suggestPage = 1;
+
 	var servertime = 0;
 
 	var timerPlaylist = null;
@@ -54,9 +86,11 @@
 	var timerSearchInput = null;
 	var timerMap = null;
 	var timerSearchInput = null;
+	var timerSuggest = null;
 
 	var playlistXhr = null;
 	var searchXhr = null;
+	var suggestXhr = null;
 	var mapXhr = null;
 
 	var currentTrackId = 0;
@@ -73,14 +107,41 @@
 
 	function handleRequest(trackId, e) {
 		getText("ajax/request.php?trackId="+trackId, function (text) {
-			console.log(text);
 			updatePlaylist(true);
-			updateSearch();
+			searchContainer.classList.remove('show');
+			removeSearch();
 		});
 	}
 
+	function searchChangePage(pageId) {
+		searchPage = pageId;
+		updateSearch();
+	}
+
+	function toggleReject(suggestId, rejected) {
+		getText("ajax/suggest.php?id="+suggestId+"&reject="+(rejected?1:0), function (text) {
+			updateSuggestions();
+		});
+	}
+
+	function suggestionAccepted(suggestId) {
+		if (confirm("Make sure you have added this suggestion to the music database before continuing.\nYou can not undo this.")) {
+			getText("ajax/suggest.php?id="+suggestId+"&accept", function (text) {
+				updateSuggestions();
+			});
+		}
+	}
+
+	function suggestChangePage(pageId) {
+		suggestPage = pageId;
+		updateSuggestions();
+	}
+
 	function updatePlaylist(userAction) {
-		if (playlistXhr) playlistXhr.abort();
+		if (playlistXhr) {
+			playlistXhr.abort();
+			playlistXhr = null;
+		}
 		clearTimeout(timerPlaylist);
 		timerPlaylist = setTimeout(updatePlaylist, 10*1000);
 
@@ -93,6 +154,7 @@
 			while (playlistBody.rows.length > 0) {
 				playlistBody.deleteRow(0);
 			}
+			
 
 			for (var i = 0; i < queue.length; i++) {
 				var track = queue[i];
@@ -173,17 +235,31 @@
 	
 	
 	function updateSearch(userAction) {
-		if (searchXhr) searchXhr.abort();
+		if (searchXhr) {
+			searchXhr.abort();
+			searchXhr = null;
+		}
 		clearTimeout(timerSearch);
 		if (searchQuery === '') return;
+		if (!searchContainer.classList.contains('show')) return;
 		timerSearch = setTimeout(updateSearch, 20*1000);
 
-		searchXhr = getJSON("ajax/search.php?q="+encodeURIComponent(searchQuery), function (response) {
+		searchXhr = getJSON("ajax/search.php?q="+encodeURIComponent(searchQuery)+"&page="+searchPage, function (response) {
 			searchXhr = null;
 			servertime = response.time*1000;
+			var remaining = response.remaining;
+			if (remaining > 0) {
+				var s = remaining === 1 ? "" : "s";
+				queueWait.innerHTML = "<br>You must wait <strong>"+remaining+"</strong> more minute"+s+" before you can queue another track, or until the last track that you enqueued has been played.<br>";
+			} else {
+				queueWait.innerHTML = "";
+			}
 
 			while (searchBody.rows.length > 0) {
 				searchBody.deleteRow(0);
+			}
+			while (searchPagination.firstChild) {
+				searchPagination.removeChild(searchPagination.firstChild);
 			}
 
 			for (var i = 0; i < response.result.length; i++) {
@@ -225,13 +301,26 @@
 					cells[6].appendChild(requestBtn);
 					requestBtn.addEventListener('click', handleRequest.bind(requestBtn, track.id));
 				}
-				
+			}
+
+			searchPage = response.page;
+			
+			if (response.lastPage > 1) {
+				for (var i = 0; i < response.lastPage; i++) {
+					var btn = document.createElement('button');
+					btn.textContent = i+1;
+					if (i+1 === response.page) {
+						btn.classList.add('current');
+					}
+					btn.addEventListener('click', searchChangePage.bind(btn, i+1), false);
+					searchPagination.appendChild(btn);
+				}
 			}
 
 			if (userAction) {
 				setTimeout(function () {
 					searchContainer.scrollIntoView();
-				}, 100);
+				}, 0);
 			}
 
 		});
@@ -240,11 +329,12 @@
 	function doSearch() {
 		clearTimeout(timerSearchInput);
 		searchQuery = searchInput.value;
+		searchPage = 1;
 		if (searchQuery === "") {
 			removeSearch();
 		} else {
 			updateSearch(true);
-			searchContainer.scrollIntoView();
+			//searchContainer.scrollIntoView();
 			searchResult.classList.add('show');
 		}
 	}
@@ -259,13 +349,113 @@
 
 	}
 
+	function updateSuggestions() {
+		if (suggestXhr) {
+			suggestXhr.abort();
+			suggestXhr = null;
+		}
+		clearTimeout(timerSuggest);
+		if (!suggestContainer.classList.contains('show')) return;
+		timerSuggest = setTimeout(updateSuggestions, 2*60*1000);
+
+		suggestXhr = getJSON('ajax/suggest.php?page='+suggestPage, function (response) {
+			suggestXhr = null;
+			servertime = response.time*1000;
+
+			var remaining = response.remaining/60;
+			if (remaining > 0) {
+				var unit = "minute";
+				if (remaining > 60) {
+					unit = "hour";
+					remaining = Math.ceil(remaining/60);
+				} else {
+					remaining = Math.ceil(remaining);
+				}
+				
+				var s = remaining === 1 ? "" : "s";
+				suggestWait.innerHTML = "You must wait <strong>"+remaining+"</strong> more "+unit+s+" before you can suggest another track, or until the last track that you suggested has been accepted.";
+				suggestForm.classList.remove('show');
+			} else {
+				suggestForm.classList.add('show');
+				suggestWait.innerHTML = "";
+			}
+
+			while (suggestBody.rows.length > 0) {
+				suggestBody.deleteRow(0);
+			}
+			while (suggestPagination.firstChild) {
+				suggestPagination.removeChild(suggestPagination.firstChild);
+			}
+
+			if (response.list.length === 0) {
+				suggestTable.classList.remove('show');
+			} else {
+				suggestTable.classList.add('show');
+			}
+
+			for (var i = 0; i < response.list.length; i++) {
+				var suggestion = response.list[i];
+				var row = suggestBody.insertRow(-1);
+				if (suggestion.rejected) {
+					row.classList.add('rejected');
+				}
+				if (suggestion.accepted) {
+					row.classList.add('accepted');
+				}
+				var cells = [];
+				while (cells.length < 6) {
+					cells.push(row.insertCell(-1));
+				}
+				cells[0].innerHTML = prettyTimestampSearch(suggestion.time);
+				cells[1].textContent = suggestion.username;
+				cells[2].textContent = suggestion.suggestion;
+				cells[3].textContent = suggestion.reason;
+
+				if (isAdmin) {
+					if (!suggestion.accepted) {
+						var rejectButton = document.createElement('button');
+						rejectButton.textContent = '×';
+						rejectButton.className = 'rejectbtn';
+						rejectButton.addEventListener('click', toggleReject.bind(rejectButton, suggestion.id, !suggestion.rejected), false);
+						cells[4].appendChild(rejectButton);
+					}
+					if (!suggestion.rejected && !suggestion.accepted) {
+						var acceptButton = document.createElement('button');
+						acceptButton.textContent = '✔';
+						acceptButton.className = 'acceptbtn';
+						acceptButton.addEventListener('click', suggestionAccepted.bind(acceptButton, suggestion.id), false);
+						cells[5].appendChild(acceptButton);
+					}
+				}
+			}
+
+			suggestPage = response.page;
+			
+			if (response.lastPage > 1) {
+				for (var i = 0; i < response.lastPage; i++) {
+					var btn = document.createElement('button');
+					btn.textContent = i+1;
+					if (i+1 === response.page) {
+						btn.classList.add('current');
+					}
+					btn.addEventListener('click', suggestChangePage.bind(btn, i+1), false);
+					suggestPagination.appendChild(btn);
+				}
+			}
+
+		});
+	}
+
 
 	function updateMap() {
-		if (mapXhr) mapXhr.abort();
+		if (mapXhr) {
+			mapXhr.abort();
+			mapXhr = null;
+		}
 		clearTimeout(timerMap);
 		timerMap = setTimeout(updateMap, 30*1000);
 
-		getJSON("ajax/map.php", function (coords) {
+		mapXhr = getJSON("ajax/map.php", function (coords) {
 			mapXhr = null;
 
 			geoctx.clearRect(0, 0, geocanvas.width, geocanvas.height);
@@ -283,6 +473,7 @@
 	updatePlaylist();
 	updateMap();
 	doSearch();
+	updateSuggestions();
 	
 	searchInput.addEventListener('input', function () {
 		clearTimeout(timerSearchInput);
@@ -297,6 +488,45 @@
 	searchForm.addEventListener('submit', function (e) {
 		e.preventDefault();
 		doSearch();
+	}, false);
+
+	toggleSearch.addEventListener('click', function () {
+		if (searchContainer.classList.contains('show')) {
+			searchContainer.classList.remove('show');
+			removeSearch();
+		} else {
+			searchContainer.classList.add('show');
+			searchInput.focus();
+			if (searchQuery !== '') {
+				updateSearch(true);
+				searchResult.classList.add('show');
+			}
+		}
+	});
+
+	toggleSuggestions.addEventListener('click', function () {
+		if (suggestContainer.classList.contains('show')) {
+			suggestContainer.classList.remove('show');
+		} else {
+			suggestContainer.classList.add('show');
+		}
+		updateSuggestions();
+	});
+
+	suggestForm.addEventListener('submit', function (e) {
+		e.preventDefault();
+		if (suggestForm.classList.contains('show')) {
+			postFormJSON('ajax/suggest.php', suggestForm, function (response) {
+				if (response.tooFast) {
+					alert("You tried to suggest a track too fast");
+				} else {
+					suggestPage = 1;
+				}
+				updateSuggestions();
+			});
+		} else {
+			alert("You can't suggest when the form is disabled ;)");
+		}
 	}, false);
 
 	window.updateMain = function (trackId) {

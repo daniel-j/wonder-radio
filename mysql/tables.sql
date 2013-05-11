@@ -58,3 +58,17 @@ CREATE TABLE `votes` (
   UNIQUE KEY `trackIdIp` (`trackId`,`ip`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `suggestions`;
+
+CREATE TABLE `suggestions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` int(10) unsigned NOT NULL,
+  `timeSuggested` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `username` varchar(100) NOT NULL,
+  `suggestion` varchar(255) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `rejected` boolean NOT NULL DEFAULT 0,
+  `accepted` boolean NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

@@ -7,16 +7,37 @@ if (!isset($_GET['q'])) {
 }
 $remaining = getQueueRemainingTime();
 
+
 $search = $_GET['q'];
 $sql = $db->prepare("SELECT COUNT(*) FROM queue");
 $sql->execute();
 $qcount = $sql->fetchAll()[0][0];
+
+$page = isset($_GET['page'])? intval($_GET['page']) : 1;
+$sql = $db->prepare("
+	SELECT
+		COUNT(tracks.id) as matchCount
+	FROM
+		tracks
+	WHERE
+		MATCH(tags) AGAINST(?) OR tags LIKE ?
+	LIMIT 1");
+$sql->execute(array($search, "%".$search."%"));
+$matchCount = $sql->fetch()['matchCount'];
+$lastpage = ceil($matchCount/$searchResultsPerPage);
+$page = max(min($page, $lastpage), 1);
+
+$offset = $searchResultsPerPage*($page-1);
+
 
 $searchResult = array(
 	"time" => time(),
 	"remaining" => $remaining,
 	"trackWait" => $trackWait,
 	"queueFull" => $qcount >= $queueMaxSize,
+	"page" => $page,
+	"lastPage" => $lastpage,
+	"totalResults" => $matchCount,
 
 	"result" => array()
 );
@@ -37,7 +58,8 @@ $sql = $db->prepare("
 		MATCH(tags) AGAINST(?) OR tags LIKE ?
 	ORDER BY
 		relevance DESC
-	LIMIT 50");
+	LIMIT
+		$offset, $searchResultsPerPage");
 
 $sql->execute(array($search, $search, "%".$search."%"));
 
@@ -47,7 +69,7 @@ $result = $sql->fetchAll();
 foreach ($result as $track) {
 	$title = empty($track['title'])? $track['file'] : $track['title'];
 	
-	if ($track['qid'] !== NULL) {
+	/*if ($track['qid'] !== NULL) {
 		$requestButton = "Queued";
 	} else if ($track['lastplayedTime'] != NULL && $track['lastplayedTime'] < $trackWait) {
 		
@@ -58,7 +80,7 @@ foreach ($result as $track) {
 		$requestButton = "-";
 	} else {
 		$requestButton = "<form method=\"post\" action=\"./ajax/request.php\"><input type=\"hidden\" name=\"request\" value=\"{$track['id']}\"><button>Request</button></form>";
-	}
+	}*/
 
 	$searchResult['result'][] = array(
 		"id" => intval($track['id']),

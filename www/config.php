@@ -11,6 +11,10 @@ $radioTitle = "DJazz's Music Radio";
 $trackWait = 3*60; // In minutes
 $queueWait = 20; // In minutes
 $queueMaxSize = 10;
+$suggestWait = 1;
+
+$searchResultsPerPage = 20;
+$suggesionsPerPage = 20;
 
 // Make a hidden.php in the parent folder that looks like this:
 /*

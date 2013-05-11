@@ -54,7 +54,7 @@ button.vote {
 }
 
 #currentSongWrapper {
-	#currentSong {
+	div#currentSong {
 		font-weight: bold;
 		@media(-webkit-min-device-pixel-ratio:0) {
 			-webkit-marquee: auto small infinite scroll 15;
@@ -68,7 +68,7 @@ button.vote {
 	}
 }
 html.main {
-	background-color: darken(@medium, 50%);
+	height: 100%;
 }
 .main {
 
@@ -76,11 +76,10 @@ html.main {
 	body {
 		font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
 		font-size: 14px;
-		.gradient(darken(@medium, 50%), darken(@medium, 50%), darken(@medium, 30%));
+		.gradient(darken(spin(@dark, -5), 40%), darken(spin(@dark, -5), 40%), darken(spin(@dark, -5), 15%));
 		background-repeat: no-repeat;
 		background-attachment: fixed;
 		margin: 0px;
-		padding-bottom: 20px;
 		cursor: default;
 		height: 100%;
 	}
@@ -191,13 +190,13 @@ html.main {
 		background-color: white;
 	}
 
-	.playlist, .search-result {
+	.playlist, .search-result, #suggestTable {
 		border-spacing:0;
 		border-collapse:collapse;
 		width: 100%;
 		font-size: 13px;
 
-		thead tr, tr.queued {
+		thead tr, tr.queued, tr.rejected, tfoot tr {
 			background-color: lighten(@light, 5%);
 		}
 
@@ -206,7 +205,7 @@ html.main {
 			text-align: left;
 			font-size: 13px;
 
-			color: @dark;
+			color: lighten(@dark, 10%);
 		}
 
 		td {
@@ -220,13 +219,40 @@ html.main {
 			}
 		}
 
-		tr {
+		thead tr, tbody tr {
 			&:not(.current):hover td {
 				background-color: lighten(@light, 7%);
 			}
-			&.queued td, &.unqueueable td {
+			&.queued td, &.unqueueable td, &.rejected td {
 				color: #999;
 			}
+		}
+		tfoot tr td {
+			padding: 0px;
+			
+		}
+		tfoot tr button {
+			color: lighten(@dark, 10%);
+			background-color: transparent;
+			border: none;
+			padding: 2px 5px;
+			font-size: 14px;
+			margin: 3px;
+
+			&:first-child {
+				margin-left: 10px;
+			}
+
+			&:hover {
+				color: lighten(@dark, 20%);
+			}
+			
+			&.current {
+				font-weight: bold;
+				color: darken(@dark, 10%);
+				font-size: 16px;
+			}
+			
 		}
 	}
 
@@ -288,23 +314,34 @@ html.main {
 		}
 	}
 
-
-	#searchContainer {
-		background-color: lighten(@light, 7%);
+	#searchContainer, #suggestContainer {
+		background-color: lighten(@light, 5%);
 		clear: both;
 		border-top: 1px solid darken(@light, 5%);
 
 		h2 {
 			color: @medium;
-			margin: 10px;
-			margin-bottom: 0px;
-			font-family: Equestria;
+			padding: 5px 10px;
+			margin: 0px;
+			font-family: "Equestria";
 			font-weight: normal;
 			font-size: 30px;
+			.gradient(lighten(@light, 7%), lighten(@light, 5%), lighten(@light, 8%));
+			cursor: pointer;
 		}
+	}
+
+	#searchContainer {
+
+		&:not(.show) {
+			#searchForm, #searchResult {
+				display: none;
+			}
+		}
+		
 		form {
 			padding: 10px;
-			padding-top: 0px;
+			border-top: 1px solid @light;
 
 			input[name='search'] {
 				width: 300px;
@@ -313,6 +350,7 @@ html.main {
 				border: 2px solid lighten(@dark, 8%);
 				margin: 0px;
 				border-radius: 3px;
+				color: darken(@dark, 30%);
 
 				&:focus {
 					outline-color: @dark;
@@ -335,7 +373,7 @@ html.main {
 			}
 		}
 
-		#searchResult {
+		&.show #searchResult {
 			display: none;
 
 			&.show {
@@ -362,7 +400,7 @@ html.main {
 			}
 		}
 
-		button {
+		tbody button {
 			background-color: @light;
 			border: 1px solid @medium;
 			border-radius: 2px;
@@ -371,6 +409,114 @@ html.main {
 			display: block;
 			margin: 0px;
 			width: 100%;
+		}
+	}
+
+	#suggestTable {
+		border-top: 1px solid darken(@light, 2%);
+		background-color: white;
+	}
+
+	#suggestContainer {
+
+		&:not(.show) {
+			#suggestForm, #suggestTable, #suggestWait {
+				display: none;
+			}
+		}
+
+		#suggestForm table {
+			border-spacing:0;
+			border-collapse:collapse;
+			padding: 0px;
+
+			th, td {
+				padding: 0px;
+			}
+			th {
+				text-align: left;
+				font-size: 12px;
+				color: lighten(@dark, 15%);
+			}
+			td {
+				padding-top: 2px;
+			}
+
+		}
+		#suggestForm {
+			padding: 10px;
+			border-top: 1px solid @light;
+			display: none;
+
+			input[type=text] {
+				padding: 2px;
+				font-size: 13px;
+				border: 2px solid lighten(@dark, 20%);
+				margin: 0px;
+				border-radius: 3px;
+				color: darken(@dark, 25%);
+				margin: 0px;
+				margin-right: 5px;
+
+				&:focus {
+					outline-color: lighten(@dark, 20%);
+				}
+			}
+			input[type='submit'] {
+				width: 70px;
+				.gradient(@light, darken(@light, 10%), @light);
+				border: 2px solid lighten(@dark, 8%);
+				color: darken(@dark, 20%);
+				border-radius: 5px;
+				padding: 2px;
+				margin: 0px;
+				font-size: 14px;
+				
+
+				&:active {
+					.gradient(darken(@light, 10%), darken(@light, 5%), darken(@light, 10%));
+				}
+			}
+		}
+
+		#suggestWait {
+			padding: 0px 10px;
+			padding-bottom: 10px;
+		}
+
+		&.show #suggestTable:not(.show) {
+			display: none;
+		}
+
+		#suggestTable {
+
+			button.rejectbtn, button.acceptbtn {
+				background-color: transparent;
+				border: none;
+				
+				padding: 0px;
+				width: 18px;
+				height: 18px;
+				line-height: 20px;
+				font-weight: bold;
+				margin-right: 5px;
+			}
+			button.rejectbtn {
+				font-size: 30px;
+				color: red;
+				margin-left: 5px;
+			}
+			button.acceptbtn {
+				font-size: 24px;
+				color: green;
+			}
+			tr.rejected button.rejectbtn {
+				color: rgba(0, 0, 0, 0.2);
+			}
+		}
+
+		&.show #suggestForm.show {
+			display: block;
 		}
 	}
 
@@ -482,7 +628,7 @@ html.main {
 			}
 		}
 
-		.playlist tr > *, .search-result tr > * {
+		.playlist tr > *, .search-result :not(tfoot) tr > *, #suggestTable tr > * {
 			&:nth-child(1) {
 				display: none;
 			}

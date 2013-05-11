@@ -65,20 +65,12 @@ $remaining = getQueueRemainingTime();
 	</div>
 
 	<div id="searchContainer">
-		
-		<a name="search"><h2>Search &amp; request</h2></a>
+		<h2 id="toggleSearch"><a name="search">Search &amp; request</a></h2>
 		<form id="searchForm">
 			<input type="text" id="searchInput" name="search"<?php if(isset($_GET['search'])) echo " value=\"".htmlentities($_GET['search'])."\" autofocus"; ?>>
 			<input type="submit" value="Search">
 
 			<div id="queueWait"></div>
-
-			<?php
-			/*if ($remaining !== 0) {
-				$s = $remaining === 1 ? "" : "s";
-				echo "<br>You must wait <strong>".$remaining."</strong> more minute$s before you can queue another track, or until the last track that you enqueued has been played.<br>";
-			}*/
-			?>
 		</form>
 
 		<table id="searchResult" class="search-result">
@@ -86,9 +78,29 @@ $remaining = getQueueRemainingTime();
 				<tr><th width=1></th><th>Title</th><th>Artist</th><th width=1>Plays</th><th width=1>Requests</th><th width=1>Rating</th><th width=1></th></tr>
 			</thead>
 			<tbody id="searchBody"></tbody>
+			<tfoot><td colspan="7" id="searchPagination" class="pagination"></td></tfoot>
 		</table>
 
 	</div>
+
+	<div id="suggestContainer">
+		<h2 id="toggleSuggestions"><a name="suggest">Suggest new music</a></h2>
+		<form id="suggestForm" method="post" action="ajax/suggest.php">
+			<table>
+				<tr><th>Your name*</th><th>YouTube-link/song name*</th><th>Reason/motivation*</th><th></th></tr>
+				<tr><td><input type="text" name="username" required size=15></td><td><input type="text" name="suggestion" required size=30></td><td><input type="text" name="reason" required size=25></td><td><input type="submit"></td></tr>
+			</table>
+		</form>
+		<div id="suggestWait"></div>
+		<table id="suggestTable">
+			<thead>
+				<tr><th width=1></th><th width=15%>Username</th><th>Suggestion</th><th>Reason/motivation</th><th width=1></th><th width=1></th></tr>
+			</thead>
+			<tbody id="suggestBody"></tbody>
+			<tfoot><td colspan="6" id="suggestPagination" class="pagination"></td></tfoot>
+		</table>
+	</div>
+
 	<footer>
 		<img id="basscannon" src="img/bass-cannon.png" width=200>
 		<canvas width=454 height=244 id="geocanvas"></canvas>
@@ -100,7 +112,6 @@ $remaining = getQueueRemainingTime();
 			<br>
 			View sourcecode: <a href="source.php">source.php</a><br>
 			Sourcecode on github: <a href="https://github.com/daniel-j/wonder-radio">https://github.com/daniel-j/wonder-radio</a><br>
-			<!--Download sourcecode here (mostly outdated): <a href="wonder-radio.zip">wonder-radio.zip</a><br>-->
 			<br>
 			Other radio stations:
 			<a href="http://everfree.net/channels/everfree-radio/playlist/">Everfree Radio</a>
@@ -123,6 +134,8 @@ var autoplay = false;
 
 var icecastpInfoUrl = "<?php echo $icecastpInfoUrl; ?>";
 var icecastMount = "<?php echo $icecastMount; ?>";
+
+var isAdmin = <?php echo $state['admin']? 'true':'false'; ?>;
 </script>
 <script src="js/simplePlayer.js"></script>
 <script src="js/updateCurrent.js"></script>
