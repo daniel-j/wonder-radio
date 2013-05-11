@@ -83,7 +83,7 @@ $remaining = getQueueRemainingTime();
 
 	</div>
 
-	<div id="suggestContainer">
+	<div id="suggestContainer"<?php echo $state['admin']?' class="show"':''; ?>>
 		<h2 id="toggleSuggestions"><a name="suggest">Suggest new music</a></h2>
 		<form id="suggestForm" method="post" action="ajax/suggest.php">
 			<table>
