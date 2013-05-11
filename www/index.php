@@ -88,7 +88,7 @@ $remaining = getQueueRemainingTime();
 		<form id="suggestForm" method="post" action="ajax/suggest.php">
 			<table>
 				<tr><th>Your name*</th><th>YouTube-link/song name*</th><th>Reason/motivation*</th><th></th></tr>
-				<tr><td><input type="text" name="username" required size=15></td><td><input type="text" name="suggestion" required size=30></td><td><input type="text" name="reason" required size=25></td><td><input type="submit"></td></tr>
+				<tr><td><input type="text" name="username" required size=15></td><td><input type="text" name="suggestion" required size=30></td><td><input type="text" name="reason" required size=25></td><td><input type="submit" value="Suggest"></td></tr>
 			</table>
 		</form>
 		<div id="suggestWait"></div>
