@@ -240,7 +240,6 @@
 			searchXhr = null;
 		}
 		clearTimeout(timerSearch);
-		if (searchQuery === '') return;
 		if (!searchContainer.classList.contains('show')) return;
 		timerSearch = setTimeout(updateSearch, 20*1000);
 
@@ -254,6 +253,8 @@
 			} else {
 				queueWait.innerHTML = "";
 			}
+
+			if (!response.result) {return;}
 
 			while (searchBody.rows.length > 0) {
 				searchBody.deleteRow(0);
@@ -329,9 +330,9 @@
 	function doSearch() {
 		clearTimeout(timerSearchInput);
 		searchQuery = searchInput.value;
-		searchPage = 1;
 		if (searchQuery === "") {
 			removeSearch();
+			updateSearch();
 		} else {
 			updateSearch(true);
 			//searchContainer.scrollIntoView();
@@ -345,6 +346,10 @@
 		while (searchBody.rows.length > 0) {
 			searchBody.deleteRow(0);
 		}
+		while (searchPagination.firstChild) {
+			searchPagination.removeChild(searchPagination.firstChild);
+		}
+		
 		searchResult.classList.remove('show');
 
 	}
@@ -481,12 +486,16 @@
 		if (searchInput.value === '') {
 			removeSearch();
 		} else {
-			timerSearchInput = setTimeout(doSearch, 1000);
+			timerSearchInput = setTimeout(function () {
+				searchPage = 1;
+				doSearch();
+			}, 1000);
 		}
 	});
 
 	searchForm.addEventListener('submit', function (e) {
 		e.preventDefault();
+		searchPage = 1;
 		doSearch();
 	}, false);
 
@@ -497,10 +506,7 @@
 		} else {
 			searchContainer.classList.add('show');
 			searchInput.focus();
-			if (searchQuery !== '') {
-				updateSearch(true);
-				searchResult.classList.add('show');
-			}
+			doSearch();
 		}
 	});
 
