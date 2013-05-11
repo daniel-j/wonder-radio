@@ -11,7 +11,7 @@ $radioTitle = "DJazz's Music Radio";
 $trackWait = 3*60; // In minutes
 $queueWait = 20; // In minutes
 $queueMaxSize = 10;
-$suggestWait = 1;
+$suggestWait = 5*60;
 
 $searchResultsPerPage = 20;
 $suggesionsPerPage = 20;
