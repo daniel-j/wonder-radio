@@ -104,7 +104,7 @@ $sql = $db->prepare("
 		id, username, suggestion, reason, rejected, accepted, UNIX_TIMESTAMP(timeSuggested) as time
 	FROM
 		suggestions
-	".($state['admin']?"":"WHERE ip = INET_ATON(?) AND accepted = 0")."
+	".($state['admin']?"":"WHERE ip = INET_ATON(?)")."
 	ORDER BY
 		accepted ASC, rejected ASC, timeSuggested DESC
 	LIMIT

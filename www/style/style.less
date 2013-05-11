@@ -190,13 +190,24 @@ html.main {
 		background-color: white;
 	}
 
+	.playlist, .search-result {
+		thead tr, tbody tr {
+			&:not(.current):hover {
+				background-color: lighten(@light, 7%);
+			}
+			&.queued td, &.unqueueable td {
+				color: #999;
+			}
+		}
+	}
+
 	.playlist, .search-result, #suggestTable {
 		border-spacing:0;
 		border-collapse:collapse;
 		width: 100%;
 		font-size: 13px;
 
-		thead tr, tr.queued, tr.rejected, tfoot tr {
+		thead tr, tr.queued, tfoot tr {
 			background-color: lighten(@light, 5%);
 		}
 
@@ -219,14 +230,7 @@ html.main {
 			}
 		}
 
-		thead tr, tbody tr {
-			&:not(.current):hover td {
-				background-color: lighten(@light, 7%);
-			}
-			&.queued td, &.unqueueable td, &.rejected td {
-				color: #999;
-			}
-		}
+		
 		tfoot tr td {
 			padding: 0px;
 			
@@ -415,6 +419,35 @@ html.main {
 	#suggestTable {
 		border-top: 1px solid darken(@light, 2%);
 		background-color: white;
+
+		tr:hover {
+			background-color: lighten(@light, 7%);
+		}
+
+		tr.rejected {
+			td {
+				color: #C66;
+			}
+			background-color: #FBB;
+			&:hover {
+				background-color: #FCC;
+			}
+		}
+
+		tr.accepted {
+			td {
+				color: #696;
+			}
+			background-color: #DFD;
+			&:hover {
+				background-color: #EFE;
+			}
+		}
+		tr > *:nth-child(6) {
+			text-align: right;
+			font-weight: bold;
+			font-size: 16px;
+		}
 	}
 
 	#suggestContainer {

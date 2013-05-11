@@ -421,15 +421,29 @@
 						var rejectButton = document.createElement('button');
 						rejectButton.textContent = '×';
 						rejectButton.className = 'rejectbtn';
+						if (suggestion.rejected) {
+							rejectButton.title = "Undo the reject";
+						} else {
+							rejectButton.title = "Reject this suggestion";
+						}
 						rejectButton.addEventListener('click', toggleReject.bind(rejectButton, suggestion.id, !suggestion.rejected), false);
 						cells[4].appendChild(rejectButton);
+
+						if (!suggestion.rejected) {
+							var acceptButton = document.createElement('button');
+							acceptButton.textContent = '✔';
+							acceptButton.className = 'acceptbtn';
+							acceptButton.title = "Accept this suggestion";
+							acceptButton.addEventListener('click', suggestionAccepted.bind(acceptButton, suggestion.id), false);
+							cells[5].appendChild(acceptButton);
+						}
 					}
-					if (!suggestion.rejected && !suggestion.accepted) {
-						var acceptButton = document.createElement('button');
-						acceptButton.textContent = '✔';
-						acceptButton.className = 'acceptbtn';
-						acceptButton.addEventListener('click', suggestionAccepted.bind(acceptButton, suggestion.id), false);
-						cells[5].appendChild(acceptButton);
+					
+				} else {
+					if (suggestion.rejected) {
+						cells[5].textContent = "Rejected";
+					} else if (suggestion.accepted) {
+						cells[5].textContent = "✔";
 					}
 				}
 			}
