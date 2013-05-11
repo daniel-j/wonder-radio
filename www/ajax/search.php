@@ -2,6 +2,8 @@
 require_once dirname(__DIR__)."/config.php";
 require_once dirname(__DIR__)."/funcs.php";
 
+header("Content-Type: text/plain;charset=utf-8");
+
 if (!isset($_GET['q'])) {
 	exit;
 }
@@ -87,8 +89,8 @@ if ($search !== "") {
 
 		$searchResult['result'][] = array(
 			"id" => intval($track['id']),
-			"title" => utf8_encode($title),
-			"artist" => utf8_encode($track['artist']),
+			"title" => $title,
+			"artist" => $track['artist'],
 			"timePlayed" => intval($track['timePlayed']),
 			"playCount" => intval($track['plays']),
 			"requestCount" => intval($track['requests']),

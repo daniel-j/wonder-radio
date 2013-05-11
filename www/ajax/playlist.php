@@ -50,8 +50,8 @@ foreach ($queue as $track) {
 
 	$json['queue'][] = array(
 		"id" => intval($track['id']),
-		"title" => utf8_encode($title),
-		"artist" => utf8_encode($track['artist']),
+		"title" => $title,
+		"artist" => $track['artist'],
 		"timeAdded" => intval($track['timeQueued']),
 		"playCount" => intval($track['plays']),
 		"requestCount" => intval($track['requests']),

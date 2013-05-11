@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__)."/config.php";
 
+header("Content-Type: text/plain;charset=utf-8");
+
 if (isset($_GET['id']) && isset($_GET['reject'])) {
 	if (!$state['admin']) exit;
 
@@ -119,8 +121,8 @@ foreach ($list as $suggestion) {
 		'rejected' => intval($suggestion['rejected']) !== 0,
 		'accepted' => intval($suggestion['accepted']) !== 0,
 		'username' => utf8_encode($suggestion['username']),
-		'suggestion' => utf8_encode($suggestion['suggestion']),
-		'reason' => utf8_encode($suggestion['reason'])
+		'suggestion' => $suggestion['suggestion'],
+		'reason' => $suggestion['reason']
 	);
 }
 
