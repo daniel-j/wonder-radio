@@ -1,6 +1,7 @@
 <?php
 require_once "../config.php";
 header("Content-Type: text/plain;charset=utf-8");
+header("Access-Control-Allow-Origin: *");
 
 $icecastInfo = json_decode(utf8_decode(file_get_contents($icecastpInfoUrl)), true)[$icecastMount];
 
