@@ -23,7 +23,7 @@ var icecastMount = "/stream";
 var icecastPassword = mysqlPassword;
 var ipinfoApiKey = "15ac89298a362c69b7ce1c2cae0f0631f79c514e078fa8b93cef464c7e9a5ab7";
 
-var trackWait = 5*60; // In minutes
+var trackWait = 8*60; // In minutes
 var minimumRating = -10;
 
 var db = mysql.createConnection({
