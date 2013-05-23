@@ -17,7 +17,7 @@ $remaining = getQueueRemainingTime();
 
 <div id="wrapper">
 	<header id="topheader">
-		<img id="pinkieheadphones" src="img/pinkie-headphones.png" height=120>
+		<!--<img id="pinkieheadphones" src="img/pinkie-headphones.png" height=120>-->
 		<h1><a href="./"><?php echo $radioTitle; ?></a></h1>
 		<h2>Hosted on a Raspberry Pi running Arch Linux ARM.</h2>
 	</header>
@@ -102,18 +102,18 @@ $remaining = getQueueRemainingTime();
 	</div>
 
 	<footer>
-		<img id="basscannon" src="img/bass-cannon.png" width=200>
+		<!--<img id="basscannon" src="img/bass-cannon.png" width=200>-->
 		<canvas width=454 height=244 id="geocanvas"></canvas>
 		<div id="footercontent">
 			<?=getTotalTrackCount()?> tracks in database.<br>
 			Created by <a href="http://djazz.mine.nu/">djazz</a><br>
-			Powered by <a href="http://www.musicpd.org/">MPD</a>, Icecast2, PHP, MySQL, nginx, ponies, Node.JS and LESS.<br>
-			It's all running on a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> with Arch Linux ARM.<br>
+			Powered by <a href="http://www.musicpd.org/">MPD</a>, <a href="http://www.icecast.org/">Icecast</a>, <a href="http://php.net/">PHP</a>, <a href="https://mariadb.org/">MariaDB</a>, <a href="https://en.wikipedia.org/wiki/Nginx">nginx</a>, <a href="http://www.equestriadaily.com/">ponies</a>, <a href="http://nodejs.org/">Node.JS</a> and <a href="http://lesscss.org/">LESS</a>.<br>
+			It's all running on a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> with <a href="http://archlinuxarm.org/">Arch Linux ARM</a>.<br>
 			<br>
 			View sourcecode: <a href="source.php">source.php</a><br>
 			Sourcecode on github: <a href="https://github.com/daniel-j/wonder-radio">https://github.com/daniel-j/wonder-radio</a><br>
 			<br>
-			Other radio stations:
+			Other good radio stations:
 			<a href="http://everfree.net/channels/everfree-radio/playlist/">Everfree Radio</a>
 			<a href="http://ponify.me/">Celestia Radio</a>
 			<a href="https://www.team9000.net/radio/cloudsdale-radio.1">Cloudsdale Radio</a>
