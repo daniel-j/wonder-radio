@@ -33,7 +33,9 @@
 		clearTimeout(update);
 		timer = setTimeout(update, 10*1000);
 		getJSON('ajax/radioInfo.php', function (info) {
-			currentSong.innerHTML = info.title+(info.artist?' - '+info.artist:'');
+			if (currentTrackId !== 0 && currentTrackId !== info.id) {
+				currentSong.innerHTML = info.title+(info.artist?' - '+info.artist:'');
+			}
 			currentListeners.textContent = info.listeners;
 			currentSongVote.innerHTML = "";
 
