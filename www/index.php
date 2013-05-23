@@ -1,4 +1,4 @@
-<?php
+ <?php
 require_once "config.php";
 require_once "funcs.php";
 
@@ -19,7 +19,7 @@ $remaining = getQueueRemainingTime();
 	<header id="topheader">
 		<img id="pinkieheadphones" src="img/pinkie-headphones.png" height=120>
 		<h1><a href="./"><?php echo $radioTitle; ?></a></h1>
-		<h2>Hosted on a Raspberry Pi. 100% MLP-related music.</h2>
+		<h2>Hosted on a Raspberry Pi running Arch Linux ARM.</h2>
 	</header>
 
 	<div id="contentWrapper">
