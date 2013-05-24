@@ -103,6 +103,7 @@ $remaining = getQueueRemainingTime();
 
 	<footer>
 		<!--<img id="basscannon" src="img/bass-cannon.png" width=200>-->
+		<img src="img/logo.png" width=200 style="display: none;">
 		<canvas width=454 height=244 id="geocanvas"></canvas>
 		<div id="footercontent">
 			<?=getTotalTrackCount()?> tracks in database.<br>
